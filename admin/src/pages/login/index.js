@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
 
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined, RocketOutlined } from '@ant-design/icons';
 
+import { actionCreator } from './store'
+
 import './index.css'
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -14,10 +17,6 @@ export default class Login extends Component {
         }
         this.getCaptcha = this.getCaptcha.bind(this)
     }
-
-    onFinish(values) {
-        console.log('Received values of form: ', values);
-    };
 
     async getCaptcha() {
         const result = await axios({
@@ -37,12 +36,13 @@ export default class Login extends Component {
     }
 
     render() {
+        const { handleFinish } = this.props
         return (
             <div className='Login'>
                 <Form
                     name="normal_login"
                     className="login-form"
-                    onFinish={this.onFinish}
+                    onFinish={(values) => { handleFinish(values) }}
                 >
                     <Form.Item
                         name="username"
@@ -120,3 +120,9 @@ export default class Login extends Component {
         )
     }
 }
+const mapDispatchToProps = (dispatch) => ({
+    handleFinish: (values) => {
+        dispatch(actionCreator.getLoginAction(values))
+    }
+})
+export default connect(null, mapDispatchToProps)(Login)
