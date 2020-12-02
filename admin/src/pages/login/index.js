@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+
 import { connect } from 'react-redux'
 
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
@@ -12,31 +12,13 @@ import './index.css'
 class Login extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            captcha: ''
-        }
-        this.getCaptcha = this.getCaptcha.bind(this)
     }
-
-    async getCaptcha() {
-        const result = await axios({
-            type: 'get',
-            url: '/v1/users/captcha'
-        })
-        if (result.data.code == 0) {
-            const captcha = result.data.data
-            this.setState({
-                captcha
-            })
-        }
-    }
-
     componentDidMount() {
-        this.getCaptcha()
+        this.props.handleCaptcha()
     }
 
     render() {
-        const { handleFinish } = this.props
+        const { handleFinish, isFetching, captcha, handleCaptcha } = this.props
         return (
             <div className='Login'>
                 <Form
@@ -105,13 +87,18 @@ class Login extends Component {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <div onClick={this.getCaptcha} className='captcha' dangerouslySetInnerHTML={{ __html: this.state.captcha }}></div>
+                                <div onClick={handleCaptcha} className='captcha' dangerouslySetInnerHTML={{ __html: captcha }}></div>
                             </Col>
                         </Row>
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button">
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="login-form-button"
+                            loading={isFetching}
+                        >
                             登录
                         </Button>
                     </Form.Item>
@@ -120,9 +107,18 @@ class Login extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    isFetching: state.get('login').get('isFetching'),
+    captcha: state.get('login').get('captcha')
+})
+
 const mapDispatchToProps = (dispatch) => ({
     handleFinish: (values) => {
         dispatch(actionCreator.getLoginAction(values))
+    },
+    handleCaptcha: () => {
+        dispatch(actionCreator.getCaptchaAction())
     }
 })
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

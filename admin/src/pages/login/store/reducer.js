@@ -8,6 +8,16 @@ const defaultState = fromJS(
     }
 )
 function reducer(state = defaultState, action) {
+    if (action.type == actionTypes.REQUEST_START) {
+        return state.set('isFetching', true)
+    }
+    if (action.type == actionTypes.REQUEST_END) {
+        return state.set('isFetching', false)
+    }
+    if (action.type == actionTypes.SET_CAPTCHA) {
+        return state.set('captcha', action.payload)
+    }
+
     return state
 }
 export default reducer

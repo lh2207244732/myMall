@@ -2,24 +2,24 @@
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
     entry: { //对象写法指定需要打包的入口文件
         //chunk名称:入口文件路径
-        'index':'./src/index.js'
+        'index': './src/index.js'
     },
     output: {
         filename: '[name]-[chunkhash].bundle.js',//指定打包后的文件名称,不用带路径
         publicPath: '/',//指定输出参考根路径
         path: path.resolve(__dirname, 'dist')//指定打包后文件的存放位置,用绝对路径
     },
-    module:{
+    module: {
         //配置loader
         rules: [
             // 处理css的loader
             {
                 test: /\.css$/,
-                use:[
+                use: [
                     //'style-loader',
                     {
                         loader: MiniCssExtractPlugin.loader,
@@ -74,10 +74,10 @@ module.exports = {
                         },
                     },
                 }],
-            }           
+            }
         ]
     },
-    plugins:[
+    plugins: [
         new htmlWebpackPlugin({
             template: './src/index.html',//模板文件
             filename: 'index.html',//输出的文件名
@@ -86,8 +86,14 @@ module.exports = {
             chunks: ['index']//需要包含的入口中的chunk
         }),
         new MiniCssExtractPlugin({
-            filename:'css/[name].[fullhash].css'//使用模版指定输出的css文件的位置和文件名称,模版和出口的模版一致
+            filename: 'css/[name].[fullhash].css'//使用模版指定输出的css文件的位置和文件名称,模版和出口的模版一致
         }),
         new CleanWebpackPlugin()
-    ]
+    ],
+    resolve: {
+        alias: {
+            pages: path.resolve(__dirname, 'src/pages/'),
+            util: path.resolve(__dirname, 'src/util/')
+        }
+    }
 };

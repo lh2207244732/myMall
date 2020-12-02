@@ -6,5 +6,5 @@ import { reducer as login } from '../pages/login/store'
 
 //合并并导出reducer
 export default combineReducers({
-    login
+    login: login
 })
