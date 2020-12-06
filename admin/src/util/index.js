@@ -1,4 +1,5 @@
-//将登录状态保存到本地的localStorage中 
+const moment = require('moment')
+
 export const saveUsername = (username) => {
     window.localStorage.setItem('username', username)
 }
@@ -13,4 +14,7 @@ export const goLogin = () => {
 }
 export const goHome = () => {
     window.location.href = '/'
+}
+export const formatData = (data) => {
+    return moment(data).format('YYYY-MM-DD HH:mm:ss')
 }

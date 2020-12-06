@@ -1,10 +1,11 @@
 import React from 'react'
-import { Layout, Breadcrumb, Table } from 'antd';
+import { Layout, Breadcrumb, Table, Switch } from 'antd';
 import { connect } from 'react-redux'
 const { Content } = Layout;
 
 import CustomLayout from 'components/custom-layout'
 import { actionCreator } from './store'
+import { formatData } from 'util'
 
 class User extends React.Component {
 
@@ -46,6 +47,11 @@ class User extends React.Component {
                 title: '是否有效用户',
                 dataIndex: 'isActive',
                 key: 'isActive',
+                render: isActive => <Switch
+                    checkedChildren="是"
+                    unCheckedChildren="否"
+                    checked={isActive === '1' ? true : false}
+                />
             },
             {
                 title: 'email',
@@ -66,6 +72,7 @@ class User extends React.Component {
                 title: '注册时间',
                 dataIndex: 'createdAt',
                 key: 'createdAt',
+                render: createdAt => formatData(createdAt)
             }
         ];
 
