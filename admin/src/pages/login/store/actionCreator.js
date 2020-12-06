@@ -4,7 +4,7 @@ import { message } from 'antd';
 import * as types from './actionTypes'
 import { saveUsername } from 'util'
 import api from 'api'
-console.log(api)
+
 
 const getRequestStart = () => ({
     type: types.REQUEST_START

@@ -8,3 +8,6 @@ export const getUsername = () => {
 export const removeUsername = () => {
     window.localStorage.removeItem('username')
 }
+export const goLogin = () => {
+    window.location.href = '/login'
+}

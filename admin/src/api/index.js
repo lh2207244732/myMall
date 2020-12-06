@@ -1,5 +1,6 @@
 
 import axios from 'axios'
+import { goLogin, removeUsername } from '../util'
 
 import { SERVER, VERSION, API_CONFIG } from './config'
 
@@ -29,11 +30,16 @@ const request = (url, method, data) => {
         axios(options)
             .then(result => {
                 const data = result.data
-                console.log(data)
-                if (result.data == 10) {
+                if (data.code == 10) {
                     //没有权限
+
+                    removeUsername()
+                    goLogin()
+                    reject('没有权限')
+                } else {
+                    resolve(result)
                 }
-                resolve(result)
+
             })
             .catch(error => {
                 reject(error)

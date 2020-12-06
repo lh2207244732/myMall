@@ -5,15 +5,28 @@ import { DownOutlined, LogoutOutlined } from '@ant-design/icons';
 const { Header } = Layout;
 
 import './index.less'
-import { getUsername } from '../../util';
+import { getUsername, removeUsername, goLogin } from 'util';
+import api from 'api';
 
 class CustomHeader extends React.Component {
-
+    constructor(props) {
+        super(props)
+        this.handleLogout = this.handleLogout.bind(this)
+    }
+    //退出登录
+    async handleLogout() {
+        //向后台发送请求
+        await api.logout()
+        //删除前台username
+        removeUsername()
+        //跳转到登录页面
+        goLogin()
+    }
     render() {
         const menu = (
             <Menu>
                 <Menu.Item key="0">
-                    <a onClick={() => { console.log('点击退出') }}><LogoutOutlined /> 退出</a>
+                    <a onClick={this.handleLogout}><LogoutOutlined /> 退出</a>
                 </Menu.Item>
             </Menu>
         );
