@@ -3,15 +3,18 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 import Login from 'pages/login'
 import Home from 'pages/home'
-import { getUsername } from './util'
+import User from 'pages/user'
 import NotFound from 'pages/not-found'
+import { getUsername } from './util'
+
+
 
 class App extends Component {
     constructor(props) {
         super(props)
     }
     render() {
-        //自定义组件路由
+        //自定义保护组件路由（验证是否已经登录）
         const ProtectRoute = ({ component: Component, ...rest }) => (
             <Route
                 {...rest}
@@ -30,6 +33,7 @@ class App extends Component {
                     <Switch>
                         <ProtectRoute exact={true} path='/' component={Home} />
                         <LoginRoute path='/login' component={Login} />
+                        <ProtectRoute exact={true} path='/user' component={User} />
                         <Route path='*' component={NotFound} />
                     </Switch>
                 </div>
