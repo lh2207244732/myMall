@@ -11,3 +11,6 @@ export const removeUsername = () => {
 export const goLogin = () => {
     window.location.href = '/login'
 }
+export const goHome = () => {
+    window.location.href = '/'
+}

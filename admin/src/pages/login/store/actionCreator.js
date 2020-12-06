@@ -2,8 +2,9 @@
 import { message } from 'antd';
 
 import * as types from './actionTypes'
-import { saveUsername } from 'util'
+import { saveUsername, goHome } from 'util'
 import api from 'api'
+
 
 
 const getRequestStart = () => ({
@@ -47,7 +48,7 @@ export const getLoginAction = (values) => {
             //保存登录状态
             saveUsername(data.data.username)
             //跳转到管理员后台首页
-            window.location.href = '/'
+            goHome()
         }
         dispatch(getRequestEnd())
     }
