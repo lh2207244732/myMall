@@ -14,7 +14,7 @@ class User extends React.Component {
     }
 
     render() {
-        const { list, current, pageSize, total, handlePage, isFetching } = this.props
+        const { list, current, pageSize, total, handlePage, isFetching, handleUpdataUserIsActive } = this.props
         const dataSource = list
         const columns = [
             {
@@ -32,10 +32,15 @@ class User extends React.Component {
                 title: '是否有效用户',
                 dataIndex: 'isActive',
                 key: 'isActive',
-                render: isActive => <Switch
+                render: (isActive, record) => <Switch
                     checkedChildren="是"
                     unCheckedChildren="否"
                     checked={isActive === '1' ? true : false}
+                    onChange={
+                        checked => {
+                            const newActive = checked ? '1' : '0'
+                            handleUpdataUserIsActive(record._id, newActive)
+                        }}
                 />
             },
             {
@@ -118,6 +123,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     handlePage: (page) => {
         dispatch(actionCreator.getPageAction(page))
+    },
+    handleUpdataUserIsActive: (id, newActive) => {
+        dispatch(actionCreator.updataUserIsActicve(id, newActive))
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(User)
