@@ -14,22 +14,8 @@ class User extends React.Component {
     }
 
     render() {
-        /*
-        const dataSource = [
-            {
-                key: '1',
-                username: '吴彦祖',
-                isAdmin: '是',
-                isActive: '是',
-                email: '2207244732@qq.com',
-                phone: '19139319008',
-                wxopenid: 'wxid1234',
-                createAt: '2020-12-6'
+        const { list, current, pageSize, total, handlePage } = this.props
 
-            }
-        ];
-        */
-        const { list } = this.props
         const dataSource = list
         const columns = [
             {
@@ -96,6 +82,19 @@ class User extends React.Component {
                             rowKey='_id'
                             dataSource={dataSource}
                             columns={columns}
+                            pagination={
+                                {
+                                    current: current,
+                                    pageSize: pageSize,
+                                    total: total,
+                                    showSizeChanger: false
+                                }
+                            }
+                            onChange={
+                                (pagination) => {
+                                    handlePage(pagination.current)
+                                }
+                            }
                         />;
                 </Content>
                 </CustomLayout>
@@ -104,12 +103,15 @@ class User extends React.Component {
     }
 }
 const mapStateToProps = (state) => ({
-    list: state.get('user').get('list')
+    list: state.get('user').get('list'),
+    current: state.get('user').get('current'),
+    pageSize: state.get('user').get('pageSize'),
+    total: state.get('user').get('total')
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    handlePage: () => {
-        dispatch(actionCreator.getPageAction())
+    handlePage: (page) => {
+        dispatch(actionCreator.getPageAction(page))
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(User)

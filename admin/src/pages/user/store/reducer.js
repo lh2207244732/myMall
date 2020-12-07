@@ -3,13 +3,22 @@ import { fromJS } from 'immutable'
 //定义一个初始的state
 const defaultState = fromJS(
     {
-        list: []
+        list: [],
+        current: 1,
+        pageSize: 0,
+        total: 0
     }
 )
 function reducer(state = defaultState, action) {
     if (action.type == actionTypes.SET_PAGE) {
-        const { list } = action.payload
-        return state.set('list', list)
+        const { list, current, pageSize, total } = action.payload
+        console.log(current)
+        return state.merge({
+            list: list,
+            current: current,
+            pageSize: pageSize,
+            total: total
+        })
     }
     return state
 }

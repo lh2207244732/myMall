@@ -24,20 +24,25 @@ const request = (url, method, data) => {
     return new Promise((resolve, reject) => {
         const options = {
             method: method,
-            url: url,
-            data: data
+            url: url
+        }
+        switch (method.toUpperCase()) {
+            case 'GET':
+                options.params = data
+                break;
+            default:
+                options.data = data
         }
         axios(options)
             .then(result => {
                 const data = result.data
                 if (data.code == 10) {
                     //没有权限
-
                     removeUsername()
                     goLogin()
                     reject('没有权限')
                 } else {
-                    resolve(result)
+                    resolve(data)
                 }
 
             })
