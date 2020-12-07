@@ -10,8 +10,8 @@ const defaultState = fromJS(
 )
 function reducer(state = defaultState, action) {
     if (action.type == actionTypes.SET_COUNTS) {
-        console.log(action)
-        const { usernum, productnum, ordernum } = action.payload.data
+        const { usernum, productnum, ordernum } = action.payload
+
         return state.merge({
             usernum: usernum,
             productnum: productnum,

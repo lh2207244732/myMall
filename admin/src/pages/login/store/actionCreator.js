@@ -5,8 +5,6 @@ import * as types from './actionTypes'
 import { saveUsername, goHome } from 'util'
 import api from 'api'
 
-
-
 const getRequestStart = () => ({
     type: types.REQUEST_START
 })
@@ -41,12 +39,12 @@ export const getLoginAction = (values) => {
             channel: 'page'
         })
         const data = result.data
-        if (data.code == 1) {
+        if (result.code == 1) {
             message.error(data.message, 1)
         } else {
             message.success('登录成功', 1)
             //保存登录状态
-            saveUsername(data.data.username)
+            saveUsername(data.username)
             //跳转到管理员后台首页
             goHome()
         }
@@ -70,8 +68,8 @@ export const getCaptchaAction = () => {
         //     dispatch(setCaptcha(captcha))
         // }
         const result = await api.getCaptcha()
-        if (result.data.code == 0) {
-            const captcha = result.data.data
+        if (result.code == 0) {
+            const captcha = result.data
             dispatch(setCaptcha(captcha))
         }
     }

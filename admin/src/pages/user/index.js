@@ -10,12 +10,11 @@ import { formatData } from 'util'
 class User extends React.Component {
 
     componentDidMount() {
-        this.props.handlePage()
+        this.props.handlePage(1)
     }
 
     render() {
-        const { list, current, pageSize, total, handlePage } = this.props
-
+        const { list, current, pageSize, total, handlePage, isFetching } = this.props
         const dataSource = list
         const columns = [
             {
@@ -90,13 +89,19 @@ class User extends React.Component {
                                     showSizeChanger: false
                                 }
                             }
+                            loading={
+                                {
+                                    spinning: isFetching,
+                                    tip: '您的请求正在加载中...'
+                                }
+                            }
                             onChange={
                                 (pagination) => {
                                     handlePage(pagination.current)
                                 }
                             }
-                        />;
-                </Content>
+                        />
+                    </Content>
                 </CustomLayout>
             </div>
         )
@@ -106,7 +111,8 @@ const mapStateToProps = (state) => ({
     list: state.get('user').get('list'),
     current: state.get('user').get('current'),
     pageSize: state.get('user').get('pageSize'),
-    total: state.get('user').get('total')
+    total: state.get('user').get('total'),
+    isFetching: state.get('user').get('isFetching')
 })
 
 const mapDispatchToProps = (dispatch) => ({

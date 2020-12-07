@@ -14,7 +14,7 @@ export const getCountsAction = () => {
     return async function (dispatch) {
         const result = await api.getCounts()
         console.log(result)
-        if (result.data.code == 0) {
+        if (result.code == 0) {
             dispatch(setCounts(result.data))
         }
     }
