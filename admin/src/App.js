@@ -5,7 +5,9 @@ import Login from 'pages/login'
 import Home from 'pages/home'
 import User from 'pages/user'
 import NotFound from 'pages/not-found'
+import Category from 'pages/category'
 import { getUsername } from './util'
+
 
 
 
@@ -34,6 +36,7 @@ class App extends Component {
                         <ProtectRoute exact={true} path='/' component={Home} />
                         <LoginRoute path='/login' component={Login} />
                         <ProtectRoute exact={true} path='/user' component={User} />
+                        <ProtectRoute path='/category' component={Category} />
                         <Route path='*' component={NotFound} />
                     </Switch>
                 </div>
