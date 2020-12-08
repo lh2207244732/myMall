@@ -1,10 +1,11 @@
 import React from 'react'
-import { Layout, Breadcrumb, Form, Input, Button, Select, Upload } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Layout, Breadcrumb, Form, Input, Button, Select } from 'antd';
+
 const { Content } = Layout;
 const { Option } = Select;
 
 import CustomLayout from 'components/custom-layout'
+import UploadImage from 'components/UploadImage'
 
 const layout = {
     labelCol: {
@@ -24,18 +25,17 @@ const tailLayout = {
 class CategorySave extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            loading: false
-        }
+        this.getImageUrl = this.getImageUrl.bind(this)
     }
+
+
+    getImageUrl(url) {
+        console.log(url)
+    }
+
+
     render() {
-        const { loading, imageUrl } = this.state;
-        const uploadButton = (
-            <div>
-                {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
-        );
+
         return (
             <CustomLayout>
                 <Breadcrumb style={{ margin: '16px 0' }}>
@@ -57,7 +57,7 @@ class CategorySave extends React.Component {
                         }}
                         onFinish={(values => { console.log(values) })}
                     >
-                        <Form.Item name="fatherCategory" label="父级分类" rules={[{
+                        <Form.Item name="pid" label="父级分类" rules={[{
                             required: true,
                             message: '请选择父级分类!'
                         }]}>
@@ -105,25 +105,12 @@ class CategorySave extends React.Component {
                                 },
                             ]}
                         >
-                            <Upload
-                                name="avatar"
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                showUploadList={false}
-                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                beforeUpload={() => { console.log('beforeUpload...') }}
-                                onChange={(values) => { console.log(values) }}
-                            >
-                                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                            </Upload>
+                            <UploadImage getImageUrl={this.getImageUrl} />
                         </Form.Item>
-
-
-
                         <Form.Item {...tailLayout}>
                             <Button type="primary" htmlType="submit">
-                                Submit
-        </Button>
+                                添加
+                            </Button>
                         </Form.Item>
                     </Form>
                 </Content>
