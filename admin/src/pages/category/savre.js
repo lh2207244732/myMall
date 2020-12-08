@@ -6,6 +6,7 @@ const { Option } = Select;
 
 import CustomLayout from 'components/custom-layout'
 import UploadImage from 'components/UploadImage'
+import { CATEGORY_ICON_UPLOAD } from 'api/config'
 
 const layout = {
     labelCol: {
@@ -25,12 +26,12 @@ const tailLayout = {
 class CategorySave extends React.Component {
     constructor(props) {
         super(props)
-        this.getImageUrl = this.getImageUrl.bind(this)
+        this.getImageUrlList = this.getImageUrlList.bind(this)
     }
 
 
-    getImageUrl(url) {
-        console.log(url)
+    getImageUrlList(urls) {
+        console.log(urls)
     }
 
 
@@ -105,7 +106,11 @@ class CategorySave extends React.Component {
                                 },
                             ]}
                         >
-                            <UploadImage getImageUrl={this.getImageUrl} />
+                            <UploadImage
+                                getImageUrlList={this.getImageUrlList}
+                                max={1}
+                                action={CATEGORY_ICON_UPLOAD}
+                            />
                         </Form.Item>
                         <Form.Item {...tailLayout}>
                             <Button type="primary" htmlType="submit">

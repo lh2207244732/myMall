@@ -9,4 +9,7 @@
 后端返回的验证码格式是svg文件，因此需要下面代码来正常显示html代码
 <!-- <div dangerouslySetInnerHTML={{__html:result.data.data}}></div> -->
 
+对于封装上传图片组件的优化：可以上传多张图片 将图片地址作为字符串返回
+
+
 
