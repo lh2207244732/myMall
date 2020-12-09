@@ -66,10 +66,16 @@ export const setIcon = (payload) => ({
 const setIconError = () => ({
     type: types.SET_ICON_ERROR
 })
+export const setCategories = (payload) => ({
+    type: types.SET_CATEGORIES,
+    payload: payload
+})
+
 export const getSaveAction = (values) => {
     return async function (dispatch, getState) {
 
         try {
+
             const icon = getState().get('category').get('icon')
             if (!icon) {
                 //如果没有icon表示没有上传图片,派发一个请求改变状态
@@ -77,15 +83,54 @@ export const getSaveAction = (values) => {
                 return
             }
             values.icon = icon
+            console.log(values)
             const result = await api.addCategory(values)
             if (result.code == 0) {
                 message.success('添加分类成功', 1)
+                //派发请求，改变分类列表状态
+                dispatch(setCategories(result.data))
+
             } else {
+                console.log(result)
                 message.error(result.message, 1)
             }
         } catch (error) {
             message.error('网络请求失败', 1)
         }
 
+    }
+}
+
+
+
+export const getLevelCategoriesAction = () => {
+    return async function (dispatch) {
+
+        try {
+
+            const result = await api.getlevelCategories({
+                level: 2
+            })
+            if (result.code == 0) {
+                dispatch(setCategories(result.data))
+            }
+        } catch (error) {
+            message.error('网络请求失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
+
+export const getValdateAction = () => {
+    return function (dispatch, getState) {
+
+        const icon = getState().get('category').get('icon')
+        if (!icon) {
+            //如果没有icon表示没有上传图片,派发一个请求改变状态
+            dispatch(setIconError())
+            return
+        }
     }
 }

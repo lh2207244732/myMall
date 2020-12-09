@@ -27,8 +27,19 @@ const tailLayout = {
 
 class CategorySave extends React.Component {
 
+    componentDidMount() {
+        this.props.handleLevelCategories()
+    }
+
     render() {
-        const { handleIcon, iconValdate, handleSave } = this.props
+        const { handleIcon, iconValdate, handleSave, handleValdate, categories } = this.props
+        console.log(categories)
+        const options = categories.map(
+            category => <Option key={category._id} value={category._id}>
+                {category.name}
+            </Option>
+        )
+
         return (
             <CustomLayout>
                 <Breadcrumb style={{ margin: '16px 0' }}>
@@ -49,6 +60,7 @@ class CategorySave extends React.Component {
                             remember: true,
                         }}
                         onFinish={handleSave}
+                        onFinishFailed={handleValdate}
                     >
                         <Form.Item name="pid" label="父级分类" rules={[{
                             required: true,
@@ -59,9 +71,8 @@ class CategorySave extends React.Component {
                                 onChange={(values) => { console.log(values) }}
                                 allowClear
                             >
-                                <Option value="0">根类别</Option>
-                                <Option value="female">female</Option>
-                                <Option value="other">other</Option>
+                                <Option value="0">根分类</Option>
+                                {options}
                             </Select>
                         </Form.Item>
                         <Form.Item
@@ -114,7 +125,7 @@ class CategorySave extends React.Component {
 }
 const mapStateToProps = (state) => ({
     iconValdate: state.get('category').get('iconValdate'),
-
+    categories: state.get('category').get('categories')
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -123,6 +134,12 @@ const mapDispatchToProps = (dispatch) => ({
     },
     handleSave: (values) => {
         dispatch(actionCreator.getSaveAction(values))
+    },
+    handleLevelCategories: () => {
+        dispatch(actionCreator.getLevelCategoriesAction())
+    },
+    handleValdate: () => {
+        dispatch(actionCreator.getValdateAction())
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CategorySave)

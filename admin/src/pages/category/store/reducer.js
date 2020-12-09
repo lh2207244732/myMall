@@ -12,7 +12,8 @@ const defaultState = fromJS(
         iconValdate: {
             help: '',
             validateStatus: ''
-        }
+        },
+        categories: []
     }
 )
 function reducer(state = defaultState, action) {
@@ -48,6 +49,10 @@ function reducer(state = defaultState, action) {
             help: '请上传手机分类图标',
             validateStatus: 'error'
         }))
+    }
+
+    if (action.type == actionTypes.SET_CATEGORIES) {
+        return state.set('categories', action.payload)
     }
 
     return state
