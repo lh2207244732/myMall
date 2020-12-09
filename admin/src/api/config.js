@@ -9,5 +9,6 @@ export const API_CONFIG = {
     getCounts: ['/counts/', 'get'],
     logout: ['/users/logout', 'get'],
     getUrlList: ['/users/list', 'get'],
-    UpdataUserActive: ['/users/isActive', 'put']
+    UpdataUserActive: ['/users/isActive', 'put'],
+    addCategory: ['/categories', 'post']
 }

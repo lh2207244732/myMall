@@ -57,14 +57,16 @@ class UploadImage extends React.Component {
     };
 
     handleChange({ fileList }) {
-        console.log(fileList)
         this.setState({ fileList })
         const imageUrlList = fileList.map(item => {
             if (item.response && item.response.status == 'done') {
                 return item.response.url
             }
         }).join(',')
-        this.props.getImageUrlList(imageUrlList)
+        //有新的图片路径时触发
+        if (imageUrlList && !/,$/.test(imageUrlList)) {
+            this.props.getImageUrlList(imageUrlList)
+        }
     }
 
     render() {
