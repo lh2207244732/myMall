@@ -2,7 +2,7 @@ import api from 'api'
 import { message } from 'antd'
 
 import * as types from './actionTypes'
-import { Provider } from 'react-redux'
+
 
 const setPage = (payload) => ({
     type: types.SET_PAGE,
@@ -19,7 +19,7 @@ export const getPageAction = (page) => {
         dispatch(getPageRequestStart())
         try {
             //注意此处后台接受的是一个对象
-            const result = await api.getUrlList({
+            const result = await api.getCategoryList({
                 page: page
             })
             if (result.code == 0) {
@@ -34,21 +34,24 @@ export const getPageAction = (page) => {
     }
 }
 
-export const updataUserIsActicve = (id, newActive) => {
+export const updataName = (id, newName) => {
     return async function (dispatch, getState) {
         dispatch(getPageRequestStart())
-        const page = getState().get('user').get('current')
+        const page = getState().get('category').get('current')
         try {
             //注意此处后台接受的是一个对象
-            const result = await api.UpdataUserActive({
+            const result = await api.UpdataCategoriesName({
                 id: id,
-                isActive: newActive,
+                name: newName,
                 page: page
             })
             if (result.code == 0) {
                 dispatch(setPage(result.data))
+                message.success('更改分类名成功', 1)
+            } else {
+                message.error(result.message, 1)
             }
-            message.success('更新用户状态成功', 1)
+
         } catch (error) {
             message.error('更新用户状态失败', 1)
         } finally {
@@ -91,7 +94,6 @@ export const getSaveAction = (values) => {
                 dispatch(setCategories(result.data))
 
             } else {
-                console.log(result)
                 message.error(result.message, 1)
             }
         } catch (error) {
@@ -109,7 +111,7 @@ export const getLevelCategoriesAction = () => {
         try {
 
             const result = await api.getlevelCategories({
-                level: 2
+                level: 3
             })
             if (result.code == 0) {
                 dispatch(setCategories(result.data))

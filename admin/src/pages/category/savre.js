@@ -89,7 +89,7 @@ class CategorySave extends React.Component {
                         </Form.Item>
                         <Form.Item
                             label="手机分类名称"
-                            name="mobilename"
+                            name="mobileName"
                             rules={[
                                 {
                                     required: true,
@@ -102,8 +102,6 @@ class CategorySave extends React.Component {
                         <Form.Item
                             label="手机分类图标"
                             required={true}
-                            // help='请上传手机分类图标'
-                            // validateStatus='error'
                             {...iconValdate.toJS()}
                         >
                             <UploadImage
@@ -125,7 +123,8 @@ class CategorySave extends React.Component {
 }
 const mapStateToProps = (state) => ({
     iconValdate: state.get('category').get('iconValdate'),
-    categories: state.get('category').get('categories')
+    categories: state.get('category').get('categories'),
+
 })
 
 const mapDispatchToProps = (dispatch) => ({
