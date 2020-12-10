@@ -15,7 +15,7 @@ class CategoryList extends React.Component {
     }
 
     render() {
-        const { list, current, pageSize, total, handlePage, isFetching, handleUpdataName } = this.props
+        const { list, current, pageSize, total, handlePage, isFetching, handleUpdataName, handleUpdataMobileName } = this.props
         const dataSource = list
         const columns = [
             {
@@ -36,7 +36,15 @@ class CategoryList extends React.Component {
             {
                 title: '手机分类名称',
                 dataIndex: 'mobileName',
-                key: 'mobileName'
+                key: 'mobileName',
+                render: (mobileName, record) => <Input
+                    defaultValue={mobileName}
+                    onBlur={(ev) => {
+                        if (ev.target.value != mobileName) {
+                            handleUpdataMobileName(record._id, ev.target.value)
+                        }
+                    }}
+                />
             },
             {
                 title: '手机图标',
@@ -138,6 +146,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     handleUpdataName: (id, newName) => {
         dispatch(actionCreator.updataName(id, newName))
+    },
+    handleUpdataMobileName: (id, newMobileName) => {
+        dispatch(actionCreator.updataMobileName(id, newMobileName))
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryList)

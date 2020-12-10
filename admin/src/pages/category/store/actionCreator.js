@@ -34,6 +34,7 @@ export const getPageAction = (page) => {
     }
 }
 
+//更新分类名
 export const updataName = (id, newName) => {
     return async function (dispatch, getState) {
         dispatch(getPageRequestStart())
@@ -54,6 +55,35 @@ export const updataName = (id, newName) => {
 
         } catch (error) {
             message.error('更新用户状态失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
+
+//更新手机分类名
+export const updataMobileName = (id, newMobileName) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('category').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataCategoriesMobileName({
+                id: id,
+                mobileName: newMobileName,
+                page: page
+            })
+
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改手机分类名成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('网络连接失败', 1)
         } finally {
             dispatch(getPageRequestEnd())
         }
