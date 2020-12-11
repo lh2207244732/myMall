@@ -91,6 +91,89 @@ export const updataMobileName = (id, newMobileName) => {
     }
 }
 
+//更新显示状态
+export const updataIsShow = (id, newIsShow) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('category').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataCategoriesIsShow({
+                id: id,
+                isShow: newIsShow,
+                page: page
+            })
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改显示状态成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('更新用户状态失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
+
+//更新是否显示在楼层
+export const updataIsFloor = (id, newIsFloor) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('category').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataCategoriesIsFloor({
+                id: id,
+                isFloor: newIsFloor,
+                page: page
+            })
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改楼层显示状态成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('网络连接失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
+
+//更新排序
+export const updataOrder = (id, newOrder) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('category').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataCategoriesOrder({
+                id: id,
+                order: newOrder,
+                page: page
+            })
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改排序成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('网络连接失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
 export const setIcon = (payload) => ({
     type: types.SET_ICON,
     payload: payload

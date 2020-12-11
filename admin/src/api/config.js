@@ -14,6 +14,9 @@ export const API_CONFIG = {
     getlevelCategories: ['/categories/levelCategories', 'get'],
     getCategoryList: ['/categories/list', 'get'],
     UpdataCategoriesName: ['/categories/name', 'put'],
-    UpdataCategoriesMobileName: ['/categories/mobileName', 'put']
+    UpdataCategoriesMobileName: ['/categories/mobileName', 'put'],
+    UpdataCategoriesIsShow: ['/categories/isShow', 'put'],
+    UpdataCategoriesIsFloor: ['/categories/isFloor', 'put'],
+    UpdataCategoriesOrder: ['/categories/order', 'put'],
 
 }

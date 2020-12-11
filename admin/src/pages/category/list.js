@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Breadcrumb, Table, Switch, Button, Input } from 'antd';
+import { Layout, Breadcrumb, Table, Switch, Button, Input, InputNumber } from 'antd';
 import { connect } from 'react-redux'
 const { Content } = Layout;
 
@@ -15,7 +15,19 @@ class CategoryList extends React.Component {
     }
 
     render() {
-        const { list, current, pageSize, total, handlePage, isFetching, handleUpdataName, handleUpdataMobileName } = this.props
+        const {
+            list,
+            current,
+            pageSize,
+            total,
+            handlePage,
+            isFetching,
+            handleUpdataName,
+            handleUpdataMobileName,
+            handleUpdataIsShow,
+            handleUpdataIsFloor,
+            handleUpdataOrder
+        } = this.props
         const dataSource = list
         const columns = [
             {
@@ -37,7 +49,9 @@ class CategoryList extends React.Component {
                 title: '手机分类名称',
                 dataIndex: 'mobileName',
                 key: 'mobileName',
+                width: '20%',
                 render: (mobileName, record) => <Input
+                    style={{ width: '60%' }}
                     defaultValue={mobileName}
                     onBlur={(ev) => {
                         if (ev.target.value != mobileName) {
@@ -50,25 +64,73 @@ class CategoryList extends React.Component {
                 title: '手机图标',
                 dataIndex: 'icon',
                 key: 'icon',
+                width: '15%',
+                render: (icon) => <img
+                    src={icon}
+                    style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '50%'
+                    }}
+                />
 
             },
             {
                 title: '是否显示',
                 dataIndex: 'isShow',
                 key: 'isShow',
+                width: '15%',
+                render: (isShow, record) => <Switch
+                    checkedChildren="显示"
+                    unCheckedChildren="隐藏"
+                    checked={isShow === '1' ? true : false}
+                    onChange={
+                        checked => {
+                            const newIsShow = checked ? '1' : '0'
+                            handleUpdataIsShow(record._id, newIsShow)
+                        }}
+                />
             },
             {
                 title: '是否楼层',
                 dataIndex: 'isFloor',
                 key: 'isFloor',
+                width: '10%',
+                render: (isFloor, record) => {
+                    return record.level == '1' ? <Switch
+                        style={{ width: '60%' }}
+                        checkedChildren="是"
+                        unCheckedChildren="否"
+                        checked={isFloor === '1' ? true : false}
+                        onChange={
+                            checked => {
+                                const newIsFloor = checked ? '1' : '0'
+                                handleUpdataIsFloor(record._id, newIsFloor)
+                            }}
+                    /> : null
+                }
             },
             {
                 title: '排序',
                 dataIndex: 'order',
                 key: 'order',
+                width: '10%',
+                render: (order, record) => <InputNumber
+                    style={{ width: '80%' }}
+                    defaultValue={order}
+                    onBlur={(ev) => {
+                        if (ev.target.value != order) {
+                            handleUpdataOrder(record._id, ev.target.value)
+                        }
+                    }}
+                />
             },
             {
                 title: '操作',
+                width: '10%',
+                render: (order, record) => <Link to={'category/save/' + record._id}>
+                    修改
+                </Link>
 
             }
         ];
@@ -149,6 +211,16 @@ const mapDispatchToProps = (dispatch) => ({
     },
     handleUpdataMobileName: (id, newMobileName) => {
         dispatch(actionCreator.updataMobileName(id, newMobileName))
-    }
+    },
+    handleUpdataIsShow: (id, newIsShow) => {
+        dispatch(actionCreator.updataIsShow(id, newIsShow))
+    },
+    handleUpdataIsFloor: (id, newIsFloor) => {
+        dispatch(actionCreator.updataIsFloor(id, newIsFloor))
+    },
+    handleUpdataOrder: (id, newOrder) => {
+        dispatch(actionCreator.updataOrder(id, newOrder))
+    },
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryList)
