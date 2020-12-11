@@ -14,6 +14,7 @@ const getPageRequestStart = () => ({
 const getPageRequestEnd = () => ({
     type: types.PAGE_REQUEST_END
 })
+//获取分页
 export const getPageAction = (page) => {
     return async function (dispatch) {
         dispatch(getPageRequestStart())
@@ -191,7 +192,6 @@ export const getSaveAction = (values) => {
     return async function (dispatch, getState) {
 
         try {
-
             const icon = getState().get('category').get('icon')
             if (!icon) {
                 //如果没有icon表示没有上传图片,派发一个请求改变状态
@@ -215,8 +215,6 @@ export const getSaveAction = (values) => {
 
     }
 }
-
-
 
 export const getLevelCategoriesAction = () => {
     return async function (dispatch) {

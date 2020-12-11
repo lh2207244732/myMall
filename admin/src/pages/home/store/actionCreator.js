@@ -13,7 +13,6 @@ const setCounts = (counts) => ({
 export const getCountsAction = () => {
     return async function (dispatch) {
         const result = await api.getCounts()
-        console.log(result)
         if (result.code == 0) {
             dispatch(setCounts(result.data))
         }

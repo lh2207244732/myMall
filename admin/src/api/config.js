@@ -18,5 +18,5 @@ export const API_CONFIG = {
     UpdataCategoriesIsShow: ['/categories/isShow', 'put'],
     UpdataCategoriesIsFloor: ['/categories/isFloor', 'put'],
     UpdataCategoriesOrder: ['/categories/order', 'put'],
-
+    getCategoryDetail: ['/categories/detail', 'get']
 }

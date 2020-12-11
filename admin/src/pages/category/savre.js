@@ -9,6 +9,7 @@ import CustomLayout from 'components/custom-layout'
 import UploadImage from 'components/UploadImage'
 import { CATEGORY_ICON_UPLOAD } from 'api/config'
 import { actionCreator } from './store'
+import api from 'api'
 
 const layout = {
     labelCol: {
@@ -26,14 +27,40 @@ const tailLayout = {
 };
 
 class CategorySave extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            id: this.props.match.params.categoryId
+        }
+        this.formRef = React.createRef()
+    }
+    async componentDidMount() {
+        if (this.state.id) {
+            //如果有id则是修改分类，需要请求分类详情，渲染分类页面
+            const result = await api.getCategoryDetail({ id: this.state.id })
+            console.log(result)
+            if (result.code == '0') {
+                const data = result.data
+                this.formRef.current.setFieldsValue({
+                    pid: data.pid,
+                    name: data.name,
+                    mobileName: data.mobileName
+                })
+            }
 
-    componentDidMount() {
+        }
         this.props.handleLevelCategories()
     }
 
     render() {
-        const { handleIcon, iconValdate, handleSave, handleValdate, categories } = this.props
-        console.log(categories)
+        const {
+            handleIcon,
+            iconValdate,
+            handleSave,
+            handleValdate,
+            categories,
+        } = this.props
+
         const options = categories.map(
             category => <Option key={category._id} value={category._id}>
                 {category.name}
@@ -61,11 +88,17 @@ class CategorySave extends React.Component {
                         }}
                         onFinish={handleSave}
                         onFinishFailed={handleValdate}
+                        ref={this.formRef}
                     >
-                        <Form.Item name="pid" label="父级分类" rules={[{
-                            required: true,
-                            message: '请选择父级分类!'
-                        }]}>
+                        <Form.Item
+                            name="pid"
+                            label="父级分类"
+
+                            rules={[{
+                                required: true,
+                                message: '请选择父级分类!'
+
+                            }]}>
                             <Select
                                 placeholder="请选择父级分类"
                                 onChange={(values) => { console.log(values) }}
@@ -78,6 +111,7 @@ class CategorySave extends React.Component {
                         <Form.Item
                             label="分类名称"
                             name="name"
+                            // initialValue={category.name}
                             rules={[
                                 {
                                     required: true,
@@ -124,7 +158,6 @@ class CategorySave extends React.Component {
 const mapStateToProps = (state) => ({
     iconValdate: state.get('category').get('iconValdate'),
     categories: state.get('category').get('categories'),
-
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -139,6 +172,7 @@ const mapDispatchToProps = (dispatch) => ({
     },
     handleValdate: () => {
         dispatch(actionCreator.getValdateAction())
-    }
+    },
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CategorySave)

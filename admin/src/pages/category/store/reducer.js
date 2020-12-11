@@ -52,9 +52,9 @@ function reducer(state = defaultState, action) {
     }
 
     if (action.type == actionTypes.SET_CATEGORIES) {
-        console.log(action.payload)
         return state.set('categories', action.payload)
     }
+
 
     return state
 }
