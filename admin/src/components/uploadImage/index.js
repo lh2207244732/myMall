@@ -39,7 +39,25 @@ class UploadImage extends React.Component {
         this.handlePreview = this.handlePreview.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
+    //更新组件时 调用render之前触发 必须返回一个对象更新state
+    static getDerivedStateFromProps(props, state) {
+        if (state.fileList.length > 0) {
+            //如果state中有值，则不改变
+            return null
+        } else {
+            //根据父组件的fileList更新state
+            return {
+                fileList: props.fileList
+            }
+        }
 
+    }
+    componentDidMount() {
+        //初始化组件时，先将其中的state清空
+        this.setState({
+            fileList: []
+        })
+    }
     handleCancel() {
         this.setState({ previewVisible: false })
     }

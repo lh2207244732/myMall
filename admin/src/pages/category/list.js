@@ -6,7 +6,7 @@ const { Content } = Layout;
 
 import CustomLayout from 'components/custom-layout'
 import { actionCreator } from './store'
-import { formatData } from 'util'
+
 
 class CategoryList extends React.Component {
 

@@ -11,6 +11,7 @@ export const API_CONFIG = {
     getUrlList: ['/users/list', 'get'],
     UpdataUserActive: ['/users/isActive', 'put'],
     addCategory: ['/categories', 'post'],
+    updateCategory: ['/categories', 'put'],
     getlevelCategories: ['/categories/levelCategories', 'get'],
     getCategoryList: ['/categories/list', 'get'],
     UpdataCategoriesName: ['/categories/name', 'put'],
@@ -18,5 +19,13 @@ export const API_CONFIG = {
     UpdataCategoriesIsShow: ['/categories/isShow', 'put'],
     UpdataCategoriesIsFloor: ['/categories/isFloor', 'put'],
     UpdataCategoriesOrder: ['/categories/order', 'put'],
-    getCategoryDetail: ['/categories/detail', 'get']
+    getCategoryDetail: ['/categories/detail', 'get'],
+
+    getAttrList: ['/attrs/list', 'get'],
+    getAttrDetail: ['/attrs/detail', 'get'],
+    addAttr: ['/attrs/', 'post'],
+    UpdataAttrOrder: ['/attrs/order', 'put'],
+    updateAttr: ['/attrs/', 'put'],
+
+
 }

@@ -30,7 +30,8 @@ class CategorySave extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            id: this.props.match.params.categoryId
+            id: this.props.match.params.categoryId,
+
         }
         this.formRef = React.createRef()
     }
@@ -46,6 +47,10 @@ class CategorySave extends React.Component {
                     name: data.name,
                     mobileName: data.mobileName
                 })
+                //请求成功，设置state中的icon用于显示
+                this.props.handleIcon(data.icon)
+            } else {
+                this.props.handleIcon('')
             }
 
         }
@@ -59,8 +64,19 @@ class CategorySave extends React.Component {
             handleSave,
             handleValdate,
             categories,
+            icon
         } = this.props
-
+        let fileList = []
+        if (icon) {
+            fileList.push({
+                uid: '-1',
+                name: 'image.png',
+                status: 'done',
+                url: icon,
+            })
+        } else {
+            fileList = []
+        }
         const options = categories.map(
             category => <Option key={category._id} value={category._id}>
                 {category.name}
@@ -71,6 +87,8 @@ class CategorySave extends React.Component {
             <CustomLayout>
                 <Breadcrumb style={{ margin: '16px 0' }}>
                     <Breadcrumb.Item>首页</Breadcrumb.Item>
+                    <Breadcrumb.Item>分类</Breadcrumb.Item>
+                    <Breadcrumb.Item>{this.state.id ? '编辑分类' : '新增分类'}</Breadcrumb.Item>
                 </Breadcrumb>
                 <Content
                     className="site-layout-background"
@@ -86,7 +104,7 @@ class CategorySave extends React.Component {
                         initialValues={{
                             remember: true,
                         }}
-                        onFinish={handleSave}
+                        onFinish={(values) => handleSave(values, this.state.id)}
                         onFinishFailed={handleValdate}
                         ref={this.formRef}
                     >
@@ -142,6 +160,7 @@ class CategorySave extends React.Component {
                                 getImageUrlList={handleIcon}
                                 max={1}
                                 action={CATEGORY_ICON_UPLOAD}
+                                fileList={fileList}
                             />
                         </Form.Item>
                         <Form.Item {...tailLayout}>
@@ -158,14 +177,15 @@ class CategorySave extends React.Component {
 const mapStateToProps = (state) => ({
     iconValdate: state.get('category').get('iconValdate'),
     categories: state.get('category').get('categories'),
+    icon: state.get('category').get('icon'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
     handleIcon: (icon) => {
         dispatch(actionCreator.setIcon(icon))
     },
-    handleSave: (values) => {
-        dispatch(actionCreator.getSaveAction(values))
+    handleSave: (values, id) => {
+        dispatch(actionCreator.getSaveAction(values, id))
     },
     handleLevelCategories: () => {
         dispatch(actionCreator.getLevelCategoriesAction())

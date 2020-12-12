@@ -35,8 +35,10 @@ class CustomSider extends React.Component {
                                         </NavLink>
                         </Menu.Item>
                         <Menu.Item key="4">
-                            <ProjectOutlined /> 属性管理
-                                </Menu.Item>
+                            <NavLink to='/attr'>
+                                <ProjectOutlined /> 属性管理
+                                </NavLink>
+                        </Menu.Item>
                         <Menu.Item key="5">
                             <UserOutlined /> 商品管理
                                 </Menu.Item>
