@@ -28,7 +28,7 @@ export const getPageAction = (page) => {
         dispatch(getPageRequestStart())
         try {
             //注意此处后台接受的是一个对象
-            const result = await api.getAttrList({
+            const result = await api.getProductList({
                 page: page
             })
             if (result.code == 0) {
@@ -112,21 +112,18 @@ export const updataOrder = (id, newOrder) => {
 
 
 //提交保存
-export const getSaveAction = (values, id) => {
+export const getSaveAction = (values) => {
     return async function (dispatch, getState) {
         try {
-            let request = api.addAttr
-            let actionMessage = '添加属性成功'
-            if (id) {
-                values.id = id
-                request = api.updateAttr
-                actionMessage = '修改属性成功'
+            let request = api.addProduct
+            let actionMessage = '添加商品成功'
+            if (values.id) {
+                request = api.updateProduct
+                actionMessage = '修改商品成功'
             }
             const result = await request(values)
             if (result.code == 0) {
                 message.success(actionMessage, 1)
-                //派发请求，改变属性
-                dispatch(setAttrs(result.data))
 
             } else {
                 message.error(result.message, 1)

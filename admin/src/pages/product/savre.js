@@ -6,10 +6,12 @@ const { Option } = Select;
 
 
 import CustomLayout from 'components/custom-layout'
+import UploadImage from 'components/UploadImage'
+import RichEditor from 'components/rich-editor'
 import { actionCreator } from './store'
 import api from 'api'
-import UploadImage from 'components/UploadImage'
-import { PRODUCT_IMAGE_UPLOAD } from 'api/config'
+import { PRODUCT_IMAGE_UPLOAD, PRODUCT_DETAIL_IMAGES_UPLOAD } from 'api/config'
+
 
 const layout = {
     labelCol: {
@@ -43,6 +45,7 @@ class ProductSave extends React.Component {
                 help: '',
                 validateStatus: ''
             },
+            detail: ''
 
         }
         this.formRef = React.createRef()
@@ -52,8 +55,13 @@ class ProductSave extends React.Component {
         this.handleImages = this.handleImages.bind(this)
         this.handleFinish = this.handleFinish.bind(this)
         this.handleValdate = this.handleValdate.bind(this)
+        this.handleDetail = this.handleDetail.bind(this)
     }
-
+    handleDetail(detail) {
+        this.setState({
+            detail: detail
+        })
+    }
     handleChange(nextTargetKeys, direction, moveKeys) {
         this.setState({ targetKeys: nextTargetKeys });
     };
@@ -80,7 +88,7 @@ class ProductSave extends React.Component {
         })
     }
     handleFinish(values) {
-        const { targetKeys, id, mainImage, images } = this.state
+        const { targetKeys, id, mainImage, images, detail } = this.state
         if (targetKeys.length > 0) {
             values.attrs = targetKeys.join(',')
         }
@@ -88,7 +96,9 @@ class ProductSave extends React.Component {
         if (mainImage && images) {
             values.mainImage = mainImage
             values.images = images
-            this.props.handleSave(values, id)
+            values.id = id
+            values.detail = detail
+            this.props.handleSave(values)
         }
 
     }
@@ -241,6 +251,7 @@ class ProductSave extends React.Component {
                             name="stock"
                             rules={[
                                 {
+                                    required: true,
                                     message: '请输入商品库存数字',
                                 },
                             ]}
@@ -298,15 +309,18 @@ class ProductSave extends React.Component {
                         </Form.Item>
                         <Form.Item
                             label="商品详情"
-                            name="detail"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '请输入商品描述!',
-                                },
-                            ]}
+                            labelCol={
+                                { span: 6, }
+                            }
+                            wrapperCol={
+                                { span: 16, }
+                            }
                         >
-                            <Input />
+                            <RichEditor
+                                data='请输入商品详情'
+                                uploadUrl={PRODUCT_DETAIL_IMAGES_UPLOAD}
+                                getData={this.handleDetail}
+                            />
                         </Form.Item>
 
                         <Form.Item {...tailLayout}>
@@ -333,9 +347,8 @@ const mapDispatchToProps = (dispatch) => ({
     handleAllAttrs: () => {
         dispatch(actionCreator.getAllAttrsAction())
     },
-    handleSave: (values, id) => {
-        console.log(values)
-        // dispatch(actionCreator.getSaveAction(values, id))
+    handleSave: (values) => {
+        dispatch(actionCreator.getSaveAction(values))
     },
 
 

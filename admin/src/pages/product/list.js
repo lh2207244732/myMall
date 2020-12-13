@@ -126,10 +126,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     handlePage: (page) => {
-        // dispatch(actionCreator.getPageAction(page))
+        dispatch(actionCreator.getPageAction(page))
     },
     handleUpdataOrder: (id, newOrder) => {
-        // dispatch(actionCreator.updataOrder(id, newOrder))
+        dispatch(actionCreator.updataOrder(id, newOrder))
     },
 
 })
