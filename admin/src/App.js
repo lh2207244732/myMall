@@ -7,6 +7,7 @@ import User from 'pages/user'
 import NotFound from 'pages/not-found'
 import Category from 'pages/category'
 import Attr from 'pages/attr'
+import Product from 'pages/product'
 import { getUsername } from './util'
 
 
@@ -39,6 +40,7 @@ class App extends Component {
                         <ProtectRoute exact={true} path='/user' component={User} />
                         <ProtectRoute path='/category' component={Category} />
                         <ProtectRoute path='/attr' component={Attr} />
+                        <ProtectRoute path='/product' component={Product} />
                         <Route path='*' component={NotFound} />
                     </Switch>
                 </div>

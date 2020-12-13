@@ -31,15 +31,23 @@ class CategorySave extends React.Component {
         super(props)
         this.state = {
             id: this.props.match.params.categoryId,
-
+            icon: '',
+            iconValdate: {
+                help: '',
+                validateStatus: ''
+            },
         }
         this.formRef = React.createRef()
+        this.handleIcon = this.handleIcon.bind(this)
+
+        this.handleFinish = this.handleFinish.bind(this)
+        this.handleValdate = this.handleValdate.bind(this)
     }
     async componentDidMount() {
         if (this.state.id) {
             //如果有id则是修改分类，需要请求分类详情，渲染分类页面
             const result = await api.getCategoryDetail({ id: this.state.id })
-            console.log(result)
+
             if (result.code == '0') {
                 const data = result.data
                 this.formRef.current.setFieldsValue({
@@ -48,24 +56,53 @@ class CategorySave extends React.Component {
                     mobileName: data.mobileName
                 })
                 //请求成功，设置state中的icon用于显示
-                this.props.handleIcon(data.icon)
+                this.setState({
+                    icon: data.icon
+                })
             } else {
-                this.props.handleIcon('')
+                this.setState({
+                    icon: ''
+                })
             }
 
         }
         this.props.handleLevelCategories()
     }
+    handleIcon(icon) {
+        this.setState({
+            icon: icon,
+            iconValdate: {
+                help: '',
+                validateStatus: ''
+            },
+        })
+    }
 
+    handleFinish(values) {
+        const { icon, id } = this.state
+        this.handleValdate()
+        if (icon) {
+            values.icon = icon
+            this.props.handleSave(values)
+        }
+    }
+    handleValdate() {
+        const { icon } = this.state
+        if (!icon) {
+            this.setState({
+
+                iconValdate: {
+                    help: '请上传手机分类图标',
+                    validateStatus: 'error'
+                },
+            })
+        }
+    }
     render() {
         const {
-            handleIcon,
-            iconValdate,
-            handleSave,
-            handleValdate,
             categories,
-            icon
         } = this.props
+        const { iconValdate, icon } = this.state
         let fileList = []
         if (icon) {
             fileList.push({
@@ -104,8 +141,10 @@ class CategorySave extends React.Component {
                         initialValues={{
                             remember: true,
                         }}
-                        onFinish={(values) => handleSave(values, this.state.id)}
-                        onFinishFailed={handleValdate}
+                        onFinishFailed={this.handleValdate}
+                        onFinish={
+                            this.handleFinish
+                        }
                         ref={this.formRef}
                     >
                         <Form.Item
@@ -129,7 +168,6 @@ class CategorySave extends React.Component {
                         <Form.Item
                             label="分类名称"
                             name="name"
-                            // initialValue={category.name}
                             rules={[
                                 {
                                     required: true,
@@ -154,10 +192,10 @@ class CategorySave extends React.Component {
                         <Form.Item
                             label="手机分类图标"
                             required={true}
-                            {...iconValdate.toJS()}
+                            {...iconValdate}
                         >
                             <UploadImage
-                                getImageUrlList={handleIcon}
+                                getImageUrlList={this.handleIcon}
                                 max={1}
                                 action={CATEGORY_ICON_UPLOAD}
                                 fileList={fileList}
@@ -175,24 +213,20 @@ class CategorySave extends React.Component {
     }
 }
 const mapStateToProps = (state) => ({
-    iconValdate: state.get('category').get('iconValdate'),
+
     categories: state.get('category').get('categories'),
-    icon: state.get('category').get('icon'),
+
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    handleIcon: (icon) => {
-        dispatch(actionCreator.setIcon(icon))
-    },
+
     handleSave: (values, id) => {
         dispatch(actionCreator.getSaveAction(values, id))
     },
     handleLevelCategories: () => {
         dispatch(actionCreator.getLevelCategoriesAction())
     },
-    handleValdate: () => {
-        dispatch(actionCreator.getValdateAction())
-    },
+
 
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CategorySave)

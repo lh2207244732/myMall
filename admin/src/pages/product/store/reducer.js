@@ -8,8 +8,8 @@ const defaultState = fromJS(
         pageSize: 0,
         total: 0,
         isFetching: false,
-
-        categories: []
+        categories: [],
+        allAttrs: [],
     }
 )
 function reducer(state = defaultState, action) {
@@ -29,14 +29,13 @@ function reducer(state = defaultState, action) {
         return state.set('isFetching', false)
     }
 
-
-
-
-
     if (action.type == actionTypes.SET_CATEGORIES) {
         return state.set('categories', action.payload)
     }
 
+    if (action.type == actionTypes.SET_ALL_ATTRS) {
+        return state.set('allAttrs', action.payload)
+    }
 
     return state
 }

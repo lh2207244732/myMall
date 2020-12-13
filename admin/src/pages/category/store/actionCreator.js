@@ -14,6 +14,7 @@ const getPageRequestStart = () => ({
 const getPageRequestEnd = () => ({
     type: types.PAGE_REQUEST_END
 })
+
 //获取分页
 export const getPageAction = (page) => {
     return async function (dispatch) {
@@ -175,14 +176,9 @@ export const updataOrder = (id, newOrder) => {
 
     }
 }
-export const setIcon = (payload) => ({
-    type: types.SET_ICON,
-    payload: payload
-})
 
-const setIconError = () => ({
-    type: types.SET_ICON_ERROR
-})
+
+
 export const setCategories = (payload) => ({
     type: types.SET_CATEGORIES,
     payload: payload
@@ -192,13 +188,7 @@ export const getSaveAction = (values, id) => {
     return async function (dispatch, getState) {
 
         try {
-            const icon = getState().get('category').get('icon')
-            if (!icon) {
-                //如果没有icon表示没有上传图片,派发一个请求改变状态
-                dispatch(setIconError())
-                return
-            }
-            values.icon = icon
+
             let request = api.addCategory
             let actionMessage = '添加分类成功'
             if (id) {
@@ -227,7 +217,7 @@ export const getLevelCategoriesAction = () => {
 
         try {
             const result = await api.getlevelCategories({
-                level: 3
+                level: 2
             })
             if (result.code == 0) {
                 dispatch(setCategories(result.data))
@@ -241,14 +231,4 @@ export const getLevelCategoriesAction = () => {
     }
 }
 
-export const getValdateAction = () => {
-    return function (dispatch, getState) {
 
-        const icon = getState().get('category').get('icon')
-        if (!icon) {
-            //如果没有icon表示没有上传图片,派发一个请求改变状态
-            dispatch(setIconError())
-            return
-        }
-    }
-}

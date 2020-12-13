@@ -32,7 +32,8 @@ class UploadImage extends React.Component {
             previewImage: '',
             previewTitle: '',
             loading: false,
-            fileList: []
+            fileList: [],
+            isUpdate: false
         }
 
         this.handleCancel = this.handleCancel.bind(this)
@@ -41,23 +42,18 @@ class UploadImage extends React.Component {
     }
     //更新组件时 调用render之前触发 必须返回一个对象更新state
     static getDerivedStateFromProps(props, state) {
-        if (state.fileList.length > 0) {
-            //如果state中有值，则不改变
+        if (state.isUpdate) {
+            //如果是更新，则不改变state
             return null
         } else {
-            //根据父组件的fileList更新state
+            //不是更新，则根据父组件的fileList更新state
             return {
                 fileList: props.fileList
             }
         }
 
     }
-    componentDidMount() {
-        //初始化组件时，先将其中的state清空
-        this.setState({
-            fileList: []
-        })
-    }
+
     handleCancel() {
         this.setState({ previewVisible: false })
     }
@@ -75,13 +71,15 @@ class UploadImage extends React.Component {
     };
 
     handleChange({ fileList }) {
-        this.setState({ fileList })
+        this.setState({
+            fileList,
+            isUpdate: true
+        })
         const imageUrlList = fileList.map(item => {
             if (item.response && item.response.status == 'done') {
                 return item.response.url
             }
         }).join(',')
-        //更新状态
         this.props.getImageUrlList(imageUrlList)
     }
 
