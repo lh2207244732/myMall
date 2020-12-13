@@ -80,16 +80,99 @@ export const getAllAttrsAction = () => {
     }
 }
 
+//更新isShow
+export const updataProductsIsShowAction = (id, newIsShow) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('product').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataProductsIsShow({
+                id: id,
+                isShow: newIsShow,
+                page: page
+            })
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改是否显示成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('网络连接失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
+
+//更新上下架
+export const updataProductsStatusAction = (id, newStatus) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('product').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataProductsStatus({
+                id: id,
+                status: newStatus,
+                page: page
+            })
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改上下架成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('网络连接失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
+
+//更改是否热门
+export const handleUpdataProductsIsHot = (id, newIsHot) => {
+    return async function (dispatch, getState) {
+        dispatch(getPageRequestStart())
+        const page = getState().get('product').get('current')
+        try {
+            //注意此处后台接受的是一个对象
+            const result = await api.UpdataProductsisHot({
+                id: id,
+                isHot: newIsHot,
+                page: page
+            })
+            if (result.code == 0) {
+                dispatch(setPage(result.data))
+                message.success('更改热门状态成功', 1)
+            } else {
+                message.error(result.message, 1)
+            }
+
+        } catch (error) {
+            message.error('网络连接失败', 1)
+        } finally {
+            dispatch(getPageRequestEnd())
+        }
+
+    }
+}
 
 
 //更新排序
-export const updataOrder = (id, newOrder) => {
+export const updataProductsOrderAction = (id, newOrder) => {
     return async function (dispatch, getState) {
         dispatch(getPageRequestStart())
         const page = getState().get('attr').get('current')
         try {
             //注意此处后台接受的是一个对象
-            const result = await api.UpdataAttrOrder({
+            const result = await api.UpdataProductsOrder({
                 id: id,
                 order: newOrder,
                 page: page

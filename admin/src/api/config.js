@@ -5,6 +5,7 @@ export const CATEGORY_ICON_UPLOAD = SERVER + '/' + VERSION + '/categories/icons'
 export const PRODUCT_IMAGE_UPLOAD = SERVER + '/' + VERSION + '/products/images'
 export const PRODUCT_DETAIL_IMAGES_UPLOAD = SERVER + '/' + VERSION + '/products/detailImages'
 
+
 export const API_CONFIG = {
     //方法名称：['请求地址','请求类型']
     login: ['/users/login', 'post'],
@@ -32,10 +33,13 @@ export const API_CONFIG = {
     addAttr: ['/attrs/', 'post'],
     UpdataAttrOrder: ['/attrs/order', 'put'],
     updateAttr: ['/attrs/', 'put'],
-
     getAttrs: ['/attrs/allAttrs', 'get'],
+
     addProduct: ['/products', 'post'],
     updateProduct: ['/products', 'put'],
     getProductList: ['/products/list', 'get'],
-
+    UpdataProductsIsShow: ['products/isShow', 'put'],
+    UpdataProductsStatus: ['products/status', 'put'],
+    UpdataProductsisHot: ['products/isHot', 'put'],
+    UpdataProductsOrder: ['products/order', 'put'],
 }

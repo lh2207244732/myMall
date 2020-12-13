@@ -14,6 +14,9 @@ const getPageRequestStart = () => ({
 const getPageRequestEnd = () => ({
     type: types.PAGE_REQUEST_END
 })
+const clearInput = () => ({
+    type: types.CLEAR_INPUT
+})
 
 //获取分页
 export const getPageAction = (page) => {
@@ -184,15 +187,13 @@ export const setCategories = (payload) => ({
     payload: payload
 })
 
-export const getSaveAction = (values, id) => {
+export const getSaveAction = (values,) => {
     return async function (dispatch, getState) {
 
         try {
-
             let request = api.addCategory
             let actionMessage = '添加分类成功'
-            if (id) {
-                values.id = id
+            if (values.id) {
                 request = api.updateCategory
                 actionMessage = '修改分类成功'
             }
@@ -201,6 +202,8 @@ export const getSaveAction = (values, id) => {
                 message.success(actionMessage, 1)
                 //派发请求，改变分类列表状态
                 dispatch(setCategories(result.data))
+                //改变input框状态
+                dispatch(clearInput())
 
             } else {
                 message.error(result.message, 1)

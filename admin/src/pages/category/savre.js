@@ -83,6 +83,7 @@ class CategorySave extends React.Component {
         this.handleValdate()
         if (icon) {
             values.icon = icon
+            values.id = id
             this.props.handleSave(values)
         }
     }
@@ -220,8 +221,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 
-    handleSave: (values, id) => {
-        dispatch(actionCreator.getSaveAction(values, id))
+    handleSave: (values) => {
+        dispatch(actionCreator.getSaveAction(values))
     },
     handleLevelCategories: () => {
         dispatch(actionCreator.getLevelCategoriesAction())

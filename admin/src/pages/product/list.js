@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Breadcrumb, Table, Button, InputNumber } from 'antd';
+import { Layout, Breadcrumb, Table, Button, InputNumber, Switch, Divider } from 'antd';
 import { connect } from 'react-redux'
 const { Content } = Layout;
 
@@ -22,6 +22,9 @@ class ProductList extends React.Component {
             total,
             handlePage,
             isFetching,
+            handleUpdataIsShow,
+            handleUpdataStatus,
+            handleUpdataIsHot,
             handleUpdataOrder
         } = this.props
         const dataSource = list
@@ -30,6 +33,53 @@ class ProductList extends React.Component {
                 title: '商品名称',
                 dataIndex: 'name',
                 key: 'name',
+            },
+            {
+                title: '是否显示在首页',
+                dataIndex: 'isShow',
+
+                width: '15%',
+                render: (isShow, record) => <Switch
+                    checkedChildren="显示"
+                    unCheckedChildren="隐藏"
+                    checked={isShow === '1' ? true : false}
+                    onChange={
+                        checked => {
+                            const newIsShow = checked ? '1' : '0'
+                            handleUpdataIsShow(record._id, newIsShow)
+                        }}
+                />
+            },
+            {
+                title: '上架/下架',
+                dataIndex: 'status',
+                width: '15%',
+                render: (status, record) => <Switch
+                    checkedChildren="上架"
+                    unCheckedChildren="下架"
+                    checked={status === '1' ? true : false}
+                    onChange={
+                        checked => {
+                            const newStatus = checked ? '1' : '0'
+                            handleUpdataStatus(record._id, newStatus)
+                        }}
+                />
+            },
+            {
+                title: '是否热门',
+                dataIndex: 'isHot',
+                key: 'isHot',
+                width: '15%',
+                render: (isHot, record) => <Switch
+                    checkedChildren="是"
+                    unCheckedChildren="否"
+                    checked={isHot === '1' ? true : false}
+                    onChange={
+                        checked => {
+                            const newIsHot = checked ? '1' : '0'
+                            handleUpdataIsHot(record._id, newIsHot)
+                        }}
+                />
             },
 
             {
@@ -49,10 +99,20 @@ class ProductList extends React.Component {
             },
             {
                 title: '操作',
-                width: '10%',
-                render: (order, record) => <Link to={'product/save/' + record._id}>
-                    修改
-                </Link>
+                width: '15%',
+                render: (order, record) =>
+                    <div>
+                        <Link to={'product/save/' + record._id}>
+                            修改
+                        </Link>
+                        <Divider
+                            type="vertical"
+                        />
+                        <Link to={'product/detail/' + record._id}>
+                            查看
+                        </Link>
+                    </div>
+
 
             }
         ];
@@ -128,8 +188,17 @@ const mapDispatchToProps = (dispatch) => ({
     handlePage: (page) => {
         dispatch(actionCreator.getPageAction(page))
     },
+    handleUpdataIsShow: (id, newIsShow) => {
+        dispatch(actionCreator.updataProductsIsShowAction(id, newIsShow))
+    },
+    handleUpdataStatus: (id, newStatus) => {
+        dispatch(actionCreator.updataProductsStatusAction(id, newStatus))
+    },
+    handleUpdataIsHot: (id, newIsHot) => {
+        dispatch(actionCreator.handleUpdataProductsIsHot(id, newIsHot))
+    },
     handleUpdataOrder: (id, newOrder) => {
-        dispatch(actionCreator.updataOrder(id, newOrder))
+        dispatch(actionCreator.updataProductsOrderAction(id, newOrder))
     },
 
 })
