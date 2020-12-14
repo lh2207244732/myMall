@@ -1,5 +1,5 @@
 require('./index.less')
-
-$('#box1').css({
-    color: 'red'
-})
+require('pages/common/nav')
+require('pages/common/search')
+require('pages/common/footer')
+console.log('index...')

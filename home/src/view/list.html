@@ -2,15 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= htmlWebpackPlugin.options.title %>
-    </title>
+    <%= require('html-loader!./common/meta.html') %>
+        <title>
+            <%= htmlWebpackPlugin.options.title %>
+        </title>
 </head>
 
 <body>
-    list page
+    <%= require('html-loader!./common/nav.html') %>
+        <h1>
+            list page
+            <i class="iconfont icon-Cart"></i>
+        </h1>
+        <%= require('html-loader!./common/search.html') %>
+            <%= require('html-loader!./common/footer.html') %>
+
 </body>
 
 </html>
