@@ -1,2 +1,5 @@
 require('./index.less')
-console.log('hello...')
+
+$('#box1').css({
+    color: 'red'
+})

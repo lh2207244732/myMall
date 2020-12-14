@@ -1,5 +1,6 @@
 // webpack.common.js
 const path = require('path');
+const webpack = require('webpack')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -69,7 +70,10 @@ module.exports = {
                     {
                         loader: 'style-resources-loader',
                         options: {
-                            patterns: path.resolve(__dirname, 'src/pages/common/them.less'),
+                            patterns: [
+                                path.resolve(__dirname, 'src/pages/common/them.less'),
+                                path.resolve(__dirname, 'src/pages/common/iconfont.css'),
+                            ]
 
                         }
                     }
@@ -86,6 +90,11 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[fullhash].css'//使用模版指定输出的css文件的位置和文件名称,模版和出口的模版一致
+        }),
+        //在所有页面中统一配置jquery
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
         }),
         new CleanWebpackPlugin()
     ],
