@@ -56,13 +56,24 @@ module.exports = {
             //处理antd的主题
             {
                 test: /\.less$/,
-                use: [{
-                    loader: 'style-loader',
-                }, {
-                    loader: 'css-loader', // translates CSS into CommonJS
-                }, {
-                    loader: 'less-loader', // compiles Less to CSS
-                }],
+                use: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader', // translates CSS into CommonJS
+                    },
+                    {
+                        loader: 'less-loader', // compiles Less to CSS
+                    },
+                    {
+                        loader: 'style-resources-loader',
+                        options: {
+                            patterns: path.resolve(__dirname, 'src/pages/common/them.less'),
+
+                        }
+                    }
+                ],
             }
         ]
     },
