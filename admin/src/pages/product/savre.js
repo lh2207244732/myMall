@@ -127,20 +127,32 @@ class ProductSave extends React.Component {
         //请求所有的属性
         this.props.handleAllAttrs()
 
-        if (this.state.id) {
-            console.log(this.state)
-            //如果有id则是修改属性，需要请求属性详情，渲染分类页面
+        if (this.state.id) {//编辑页面
             const result = await api.getProductDetail({ id: this.state.id })
-            if (result.code == '0') {
+            if (result.code == '0') {//回填数据
+                console.log(result)
                 const data = result.data
                 this.formRef.current.setFieldsValue({
-                    // category:data.category,
+                    category: data.category._id,
                     name: data.name,
-                    key: data.key,
-                    value: data.value
+                    description: data.description,
+                    price: data.price,
+                    stock: data.stock,
+                    payNums: data.payNums,
+
+                })
+                this.setState({
+                    targetKeys: data.attrs.map(attr => attr._id),
+                    mainImage: data.mainImage,
+                    images: data.images,
+                    detail: data.detail
                 })
             }
-
+        } else {//新增
+            this.setState({
+                mainImage: '',
+                images: ''
+            })
         }
     }
 
@@ -155,6 +167,10 @@ class ProductSave extends React.Component {
             selectedKeys,
             mainImageValdate,
             imagesValdate,
+            mainImage,
+            images,
+            detail
+
         } = this.state
         const options = categories.map(
             category => <Option
@@ -164,7 +180,33 @@ class ProductSave extends React.Component {
             </Option>
         )
         const dataSource = allAttrs.map(attr => ({ key: attr._id, title: attr.name }))
-
+        let mainImageFileList = []
+        if (mainImage) {
+            mainImageFileList.push({
+                uid: '-1',
+                name: 'image.png',
+                status: 'done',
+                url: mainImage,
+            })
+        } else {
+            mainImageFileList = []
+        }
+        let imagesFileList = []
+        if (images) {
+            imagesFileList = images.split(',').map((imageurl, index) => ({
+                uid: index,
+                name: index + '.png',
+                status: 'done',
+                url: imageurl,
+                response: {
+                    //为了修改之后再提交时可以取到原本的值
+                    status: 'done',
+                    url: imageurl
+                }
+            }))
+        } else {
+            imagesFileList = []
+        }
         return (
             <CustomLayout>
                 <Breadcrumb style={{ margin: '16px 0' }}>
@@ -294,7 +336,7 @@ class ProductSave extends React.Component {
                                 max={1}
                                 action={PRODUCT_IMAGE_UPLOAD}
                                 getImageUrlList={this.handleMainImage}
-                                fileList={[]}
+                                fileList={mainImageFileList}
                             />
                         </Form.Item>
                         <Form.Item
@@ -306,7 +348,7 @@ class ProductSave extends React.Component {
                                 max={5}
                                 action={PRODUCT_IMAGE_UPLOAD}
                                 getImageUrlList={this.handleImages}
-                                fileList={[]}
+                                fileList={imagesFileList}
                             />
                         </Form.Item>
                         <Form.Item
@@ -319,7 +361,7 @@ class ProductSave extends React.Component {
                             }
                         >
                             <RichEditor
-                                data='请输入商品详情'
+                                data={this.state.detail}
                                 uploadUrl={PRODUCT_DETAIL_IMAGES_UPLOAD}
                                 getData={this.handleDetail}
                             />
@@ -339,7 +381,6 @@ class ProductSave extends React.Component {
 const mapStateToProps = (state) => ({
     categories: state.get('product').get('categories'),
     allAttrs: state.get('product').get('allAttrs'),
-
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -350,6 +391,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(actionCreator.getAllAttrsAction())
     },
     handleSave: (values) => {
+
         dispatch(actionCreator.getSaveAction(values))
     },
 

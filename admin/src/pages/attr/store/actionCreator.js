@@ -28,7 +28,7 @@ export const getPageAction = (page) => {
                 page: page
             })
             if (result.code == 0) {
-                console.log(result)
+
                 dispatch(setPage(result.data))
             }
         } catch (error) {

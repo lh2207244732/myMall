@@ -143,17 +143,6 @@ class CategoryList extends React.Component {
                         <Breadcrumb.Item>分类</Breadcrumb.Item>
                         <Breadcrumb.Item>分类列表</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Link to='category/save'>
-                        <Button type='primary'
-                            style={{
-                                position: 'absolute',
-                                right: '49px',
-                                top: '75px'
-                            }}
-                        >
-                            新增
-                        </Button>
-                    </Link>
 
                     <Content
                         className="site-layout-background"
@@ -163,7 +152,18 @@ class CategoryList extends React.Component {
                             minHeight: 280,
                         }}
                     >
-
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row-reverse',
+                                marginBottom: '20px'
+                            }}>
+                            <Link to='category/save'>
+                                <Button type='primary'>
+                                    新增
+                                </Button>
+                            </Link>
+                        </div>
                         <Table
                             rowKey='_id'
                             dataSource={dataSource}

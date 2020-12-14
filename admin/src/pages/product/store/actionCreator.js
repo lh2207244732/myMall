@@ -23,14 +23,18 @@ export const setCategories = (payload) => ({
     payload: payload
 })
 //获取分页
-export const getPageAction = (page) => {
+export const getPageAction = (page, keyword) => {
     return async function (dispatch) {
         dispatch(getPageRequestStart())
         try {
             //注意此处后台接受的是一个对象
-            const result = await api.getProductList({
+            const options = {
                 page: page
-            })
+            }
+            if (keyword) {
+                options.keyword = keyword
+            }
+            const result = await api.getProductList(options)
             if (result.code == 0) {
                 dispatch(setPage(result.data))
             }

@@ -74,17 +74,7 @@ class AttrList extends React.Component {
                         <Breadcrumb.Item>属性</Breadcrumb.Item>
                         <Breadcrumb.Item>属性列表</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Link to='attr/save'>
-                        <Button type='primary'
-                            style={{
-                                position: 'absolute',
-                                right: '49px',
-                                top: '75px'
-                            }}
-                        >
-                            新增
-                        </Button>
-                    </Link>
+
 
                     <Content
                         className="site-layout-background"
@@ -94,7 +84,19 @@ class AttrList extends React.Component {
                             minHeight: 280,
                         }}
                     >
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row-reverse',
+                                marginBottom: '20px'
+                            }}>
+                            <Link to='attr/save'>
+                                <Button type='primary'>
+                                    新增
+                        </Button>
+                            </Link>
 
+                        </div>
                         <Table
                             rowKey='_id'
                             dataSource={dataSource}
