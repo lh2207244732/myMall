@@ -3,6 +3,8 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 
+import './index.less'
+
 class RichEditor extends Component {
     render() {
 
@@ -16,7 +18,7 @@ class RichEditor extends Component {
                     config={{
                         language: 'zh-cn',
                         ckfinder: {
-                            uploadUrl: { uploadUrl }
+                            uploadUrl: uploadUrl 
                         }
                     }}
                     onChange={(event, editor) => {

@@ -54,6 +54,7 @@ export const getLevelCategoriesAction = () => {
                 dispatch(setCategories(result.data))
             }
         } catch (error) {
+            console.log(error)
             message.error('网络请求失败', 1)
         } finally {
             dispatch(getPageRequestEnd())
@@ -100,6 +101,7 @@ export const updataProductsIsShowAction = (id, newIsShow) => {
             }
 
         } catch (error) {
+            console.log(error)
             message.error('网络连接失败', 1)
         } finally {
             dispatch(getPageRequestEnd())

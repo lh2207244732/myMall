@@ -128,11 +128,13 @@ class ProductSave extends React.Component {
         this.props.handleAllAttrs()
 
         if (this.state.id) {
+            console.log(this.state)
             //如果有id则是修改属性，需要请求属性详情，渲染分类页面
             const result = await api.getProductDetail({ id: this.state.id })
             if (result.code == '0') {
                 const data = result.data
                 this.formRef.current.setFieldsValue({
+                    // category:data.category,
                     name: data.name,
                     key: data.key,
                     value: data.value
