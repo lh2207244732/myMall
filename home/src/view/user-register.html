@@ -10,31 +10,40 @@
 
 <body>
     <%= require('html-loader!./common/logo.html') %>
-   <!-- 注册框部分start -->
-   <div class="main">
-    <div class="reg">
-        <h4>用户注册</h4>
-        <div class="username">
-            <span class="icon1 iconfont">&#xe625;</span><input type="text" placeholder="请输入手机号">
+        <!-- 注册框部分start -->
+        <div class="main">
+            <div class="form-box">
+                <div class="reg">
+                    <h4>用户注册</h4>
+                    <div class="error-item">
+                        <i class="iconfont icon-minus-circle error-icon"></i>
+                        <p class="error-msg">error</p>
+                    </div>
+                    <div class="username">
+                        <span class="icon1 iconfont">&#xe625;</span><input type="text" name="phone"
+                            placeholder="请输入手机号">
+                    </div>
+                    <div class="check"><input type="text" name="verify-code" placeholder="请输入手机验证码">
+                        <span class="btn-verify">获取验证码</span>
+                    </div>
+                    <div class="password">
+                        <span class="icon2 iconfont">&#xe644;</span><input type="password" name="password"
+                            placeholder="请输入密码">
+                    </div>
+                    <div class="password">
+                        <span class="icon2 iconfont">&#xe644;</span><input type="password" name="repassword"
+                            placeholder="请再次输入密码">
+                    </div>
+                    <div class="reg-sub"><a href="javascript:;" class="link" id="btn-submit">提交</a>
+                    </div>
+                    <div class="reg-item">
+                        <a href="./user-login.html" class="link">已有账号去登录</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="check"><input type="text" placeholder="请输入手机验证码">
-            <span class="btn-verify">获取验证码</span>
-        </div>
-        <div class="password">
-            <span class="icon2 iconfont">&#xe644;</span><input type="password" placeholder="请输入密码">
-        </div>
-        <div class="password">
-            <span class="icon2 iconfont">&#xe644;</span><input type="password" placeholder="请再次输入密码">
-        </div>
-        <div class="reg-sub"><a href="#" class="link">提交</a>
-        </div>
-        <div class="reg-item">
-            <a href="./user-login.html" class="link">已有账号去登录</a>
-        </div>
-    </div>
-</div>
-<!-- 注册框部分end -->
-    <%= require('html-loader!./common/footer.html') %>
+        <!-- 注册框部分end -->
+        <%= require('html-loader!./common/footer.html') %>
 
 </body>
 
