@@ -1,21 +1,21 @@
-const util = require('../../util')
+
 
 require('pages/common/logo')
 require('pages/common/footer')
 require('./index.less')
 
 var _util = require('util')
+var api = require('api')
 var formErr = {
-    showErr: function (msg) {
+    show: function (msg) {
         $('.error-item').show()
             .find('.error-msg').html(msg)
     },
-    hideErr: function () {
+    hide: function () {
         $('.error-item').hide()
             .find('.error-msg').html('')
     }
 }
-
 
 var pages = {
     init: function () {
@@ -42,10 +42,19 @@ var pages = {
         var result = this.validate(formData)
         if (result.status) {
             // 验证通过
-            formErr.hideErr()
+            formErr.hide()
+            api.register({
+                data: formData,
+                success: function (result) {
+                    console.log('请求成功')
+                },
+                error: function (msg) {
+                    formErr.show(msg)
+                }
+            })
         } else {
             //验证不通过
-            formErr.showErr(result.msg)
+            formErr.show(result.msg)
         }
     },
     //验证数据

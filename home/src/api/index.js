@@ -1,54 +1,69 @@
+var { API_CONFIG, SERVER, VERSION } = require('./config.js')
+var _util = require('util')
+const getApiObj = (apiConfig) => {
+    const apiObj = {}
 
-import axios from 'axios'
-import { goLogin, removeUsername } from '../util'
-
-import { SERVER, VERSION, API_CONFIG } from './config'
-
-/**
- * 根据配置文件生成一个对象
- * 这个对象的每一个属性名都是一个方法名，属性值是一个api的调用方法
- */
-const getApiobj = (apiConfig) => {
-    const apiobj = {}
     for (let key in apiConfig) {
-        apiobj[key] = (data) => {
-            const url = SERVER + '/' + VERSION + apiConfig[key][0] || ''
-            const method = apiConfig[key][1] || 'get'
-            //发送请求
-            return request(url, method, data)
+        apiObj[key] = (options) => {
+            let version = VERSION
+            if (options.version) {
+                version = options.version
+            }
+            //处理请求参数
+            let url = apiConfig[key][0] || ''
+
+            if (version) {
+                url = '/' + version + url
+            }
+
+            if (!url.startsWith('http://') && SERVER) {
+                url = SERVER + url
+            }
+            let method = apiConfig[key][1] || 'get'
+            return request({
+                url: url,
+                method: method,
+                data: options.data,
+                success: options.success,
+                error: options.error,
+                params: options.params//其他特殊的配置
+            })
         }
     }
-    return apiobj
-}
-const request = (url, method, data) => {
-    return new Promise((resolve, reject) => {
-        const options = {
-            method: method,
-            url: url
-        }
-        switch (method.toUpperCase()) {
-            case 'GET':
-                options.params = data
-                break;
-            default:
-                options.data = data
-        }
-        axios(options)
-            .then(result => {
-                const data = result.data
-                if (data.code == 10) {
-                    //没有权限
-                    removeUsername()
-                    goLogin()
-                    reject('没有权限')
-                } else {
-                    resolve(data)
-                }
 
-            })
-            .catch(error => {
-                reject(error)
-            })
+    return apiObj
+}
+
+const request = (options) => {
+    let params = {}
+    if (options.params) {
+        params = options.params
+    }
+    $.ajax({
+        url: options.url,
+        method: options.method,
+        data: options.data,
+        dataType: 'json',
+        xhrFields: { withCredentials: true },
+        ...params,
+        success: function (result) {
+            if (result.code == 0) {
+                options.success && options.success(result.data)
+            }
+            else if (result.code == 1) {
+                options.error && options.error(result.message)
+            }
+            else if (result.code == 10) {
+                _util.goLogin()
+            } else if (!result.code) {
+                options.success && options.success(result)
+            }
+        },
+        error: function (err) {
+            options.error && options.error('网络错误,请稍后再试')
+        }
     })
 }
-export default getApiobj(API_CONFIG)
+
+
+module.exports = getApiObj(API_CONFIG)
