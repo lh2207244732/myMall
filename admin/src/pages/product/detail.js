@@ -35,7 +35,6 @@ class ProductDetail extends React.Component {
         if (this.state.id) {//编辑页面
             const result = await api.getProductDetail({ id: this.state.id })
             if (result.code == '0') {//回填数据
-                console.log(result)
                 const data = result.data
                 this.formRef.current.setFieldsValue({
                     category: data.category.name,
