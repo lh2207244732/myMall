@@ -12,18 +12,25 @@
     <%= require('html-loader!./common/logo.html') %>
         <!-- 登录框框部分start -->
         <div class="main">
-            <div class="login">
-                <h4>动态验证码登录</h4>
-                <div class="username">
-                    <span class="icon1 iconfont">&#xe625;</span><input type="text" placeholder="请输入手机号">
-                </div>
-                <div class="check"><input type="text" placeholder="请输入手机收到的验证码"> <a href="javascript:;" class="btn"
-                        id="btn-verify-code">获取验证码</a>
-                </div>
-                <div class="login-sub"><a href="#" class="link">提交</a>
-                </div>
-                <div class="login-item">
-                    <a href="./user-login.html" class="link">已有账号去登录</a>
+            <div class="form-box">
+                <div class="login">
+                    <h4>动态验证码登录</h4>
+                    <div class="error-item">
+                        <!-- <i class="iconfont icon-minus-circle error-icon"></i> -->
+                        <p class="error-msg">error</p>
+                    </div>
+                    <div class="username">
+                        <span class="icon1 iconfont">&#xe625;</span><input type="text" name="phone"
+                            placeholder="请输入手机号">
+                    </div>
+                    <div class="check"><input type="text" name="verify-code" placeholder="请输入手机收到的验证码"> <a
+                            href="javascript:;" class="btn" id="btn-verify-code">获取验证码</a>
+                    </div>
+                    <div class="login-sub"><a href="javascript:;" class="link" id="btn-submit">登录</a>
+                    </div>
+                    <div class="login-item">
+                        <a href="./user-login.html" class="link">已有账号去登录</a>
+                    </div>
                 </div>
             </div>
         </div>

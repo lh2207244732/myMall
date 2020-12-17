@@ -29,8 +29,17 @@ module.exports = {
     goLogin: function () {
         window.location.href = '/user-login.html'
     },
-    showSuccessMsg:function(msg){
+    showSuccessMsg: function (msg) {
         alert(msg)
+    },
+    getParamFromUrl: function (key) {
+        var query = window.location.search.substr(1)
+        var reg = new RegExp('(^|&)' + key + '=' + '([^&]*)(&|$)')
+        var result = query.match(reg)
+        return result ? decodeURIComponent(result[2]) : null
+    },
+    goResult: function (type) {
+        window.location.href = '/result.html?type=' + type
     }
 
 }
