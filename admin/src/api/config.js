@@ -4,6 +4,7 @@ export const VERSION = 'v1'
 export const CATEGORY_ICON_UPLOAD = SERVER + '/' + VERSION + '/categories/icons'
 export const PRODUCT_IMAGE_UPLOAD = SERVER + '/' + VERSION + '/products/images'
 export const PRODUCT_DETAIL_IMAGES_UPLOAD = SERVER + '/' + VERSION + '/products/detailImages'
+export const AD_IMAGE_UPLOAD = SERVER + '/' + VERSION + '/ads/image'
 
 
 export const API_CONFIG = {
@@ -14,6 +15,7 @@ export const API_CONFIG = {
     logout: ['/users/logout', 'get'],
     getUrlList: ['/users/list', 'get'],
     UpdataUserActive: ['/users/isActive', 'put'],
+    UpdataUserPwd: ['/users/pwd', 'put'],
 
 
     addCategory: ['/categories', 'post'],
@@ -38,9 +40,16 @@ export const API_CONFIG = {
     addProduct: ['/products', 'post'],
     updateProduct: ['/products', 'put'],
     getProductList: ['/products/list', 'get'],
-    getProductDetail:['/products/detail','get'],
+    getProductDetail: ['/products/detail', 'get'],
     UpdataProductsIsShow: ['/products/isShow', 'put'],
     UpdataProductsStatus: ['/products/status', 'put'],
     UpdataProductsisHot: ['/products/isHot', 'put'],
     UpdataProductsOrder: ['/products/order', 'put'],
+
+    addAd: ['/ads', 'post'],
+    updateAd: ['/ads', 'put'],
+    getAdList: ['/ads/list', 'get'],
+    getAdDetail: ['/ads/detail', 'get'],
+    UpdataAdIsShow: ['/ads/isShow', 'put'],
+    UpdataAdOrder: ['/ads/order', 'put'],
 }

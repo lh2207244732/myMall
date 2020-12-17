@@ -18,19 +18,6 @@ export const getLoginAction = (values) => {
 
         //派发action 改变登录按钮状态
         dispatch(getRequestStart())
-        /*
-        const result = await axios({
-            method: 'post',
-            url: 'v1/users/login',
-            data: {
-                username: values.username,
-                password: values.password,
-                role: 'admin',
-                captchaCode: values.captcha,
-                channel: 'page'
-            }
-        })
-        */
         const result = await api.login({
             username: values.username,
             password: values.password,
@@ -38,13 +25,12 @@ export const getLoginAction = (values) => {
             captchaCode: values.captcha,
             channel: 'page'
         })
-        const data = result.data
         if (result.code == 1) {
-            message.error(data.message, 1)
+            message.error(result.message, 1)
         } else {
             message.success('登录成功', 1)
             //保存登录状态
-            saveUsername(data.username)
+            saveUsername(result.data.username)
             //跳转到管理员后台首页
             goHome()
         }
@@ -59,14 +45,6 @@ const setCaptcha = (captcha) => ({
 //获取图形验证码
 export const getCaptchaAction = () => {
     return async function (dispatch) {
-        // const result = await axios({
-        //     type: 'get',
-        //     url: '/v1/users/captcha'
-        // })
-        // if (result.data.code == 0) {
-        //     const captcha = result.data.data
-        //     dispatch(setCaptcha(captcha))
-        // }
         const result = await api.getCaptcha()
         if (result.code == 0) {
             const captcha = result.data

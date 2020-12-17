@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Layout, Menu } from 'antd';
-import { UserOutlined, UnorderedListOutlined, ProjectOutlined, DownOutlined, LogoutOutlined, HomeOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { UserOutlined, UnorderedListOutlined, ProjectOutlined, DollarOutlined, LockOutlined, HomeOutlined, ShoppingOutlined, FundViewOutlined } from '@ant-design/icons';
 const { Sider } = Layout;
 
 import './index.less'
@@ -45,14 +45,20 @@ class CustomSider extends React.Component {
                                 </NavLink>
                         </Menu.Item>
                         <Menu.Item key="6">
-                            <UserOutlined /> 订单管理
-                                </Menu.Item>
+                            <NavLink to='/order'>
+                                <DollarOutlined /> 订单管理
+                                </NavLink>
+                        </Menu.Item>
                         <Menu.Item key="7">
-                            <UserOutlined /> 广告管理
-                                </Menu.Item>
+                            <NavLink to='/ad'>
+                                <FundViewOutlined /> 广告管理
+                                </NavLink>
+                        </Menu.Item>
                         <Menu.Item key="8">
-                            <UserOutlined /> 修改密码
-                                </Menu.Item>
+                            <NavLink to='/pwd'>
+                                <LockOutlined /> 修改密码
+                                </NavLink>
+                        </Menu.Item>
                     </Menu>
                 </Sider>
             </div>
