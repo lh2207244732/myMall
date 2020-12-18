@@ -94,8 +94,14 @@ module.exports = {
 
                         }
                     }
-                ],
-            }
+                ]
+            },
+            {
+                test: /\.tpl$/,
+                use: {
+                    loader: 'html-loader',
+                }
+            },
         ]
     },
     plugins: [
@@ -120,6 +126,7 @@ module.exports = {
             pages: path.resolve(__dirname, 'src/pages/'),
             util: path.resolve(__dirname, 'src/util/'),
             api: path.resolve(__dirname, 'src/api/'),
+            swiper:path.resolve(__dirname, 'node_modules/swiper/'),
         }
     }
 };
