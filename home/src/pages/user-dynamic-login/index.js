@@ -33,9 +33,68 @@ var page = {
                     _this.submit()
                 }
             }),
-            //发送获取手机验证码请求
+            //刷新验证码
+            $('.captcha-img').on('click', function () {
+                _this.getCaptcha()
+            }),
+            //获取验证码
             $('#btn-verify-code').on('click', function () {
-                _this.getVerifyCodeRequest()
+                var formData = {
+                    phone: $('input[name="phone"]').val(),
+                }
+                var result = _this.validate(formData)
+                if (result.status) {
+                    // 验证通过
+                    _this.getCaptcha()
+                    $('.captcha-box').show()
+                } else {
+                    formErr.show(result.msg)
+                }
+
+                // _this.getVerifyCodeRequest()
+            }),
+            $('#btn-captcha-code').on('click', function () {
+                var $this = $(this)
+                var phone = $.trim($('[name="phone"]').val())
+                var captchaCode = $.trim($('[name="captcha-code"]').val())
+                //电话号码不能为空
+                if (!_util.validate(phone, 'require')) {
+                    formErr.show("电话号码不能为空")
+                    return;
+                }
+                //电话号码格式验证
+                if (!_util.validate(phone, 'phone')) {
+                    formErr.show("电话号码格式不正确")
+                    return;
+                }
+                //图形验证码不能为空
+                if (!_util.validate(captchaCode, 'require')) {
+                    formErr.show("图形验证码不能为空")
+                    return;
+                }
+                //图形验证码格式验证
+                if (!_util.validate(captchaCode, 'captchaCode')) {
+                    formErr.show("图形验证码格式不正确")
+                    return;
+                }
+                formErr.hide()
+                api.getLoginVerifyCode({
+                    data: {
+                        phone: phone,
+                        captchaCode: captchaCode
+                    },
+                    success: function (result) {
+                        formErr.hide()
+                        _util.showSuccessMsg('验证码发送成功')
+                        $('.captcha-box').hide()
+                        window.localStorage.setItem('getRegisterVerifyCodeTime', Date.now())
+                        //开始计时
+                        _this.handleTimer()
+                    },
+                    error: function (msg) {
+                        formErr.show(msg)
+                    }
+                })
             })
     },
 
@@ -83,14 +142,16 @@ var page = {
             result.msg = '手机号格式不正确'
             return result
         }
-        //验证码验证
-        if (!_util.validate(formData.verifyCode, 'require')) {
-            result.msg = '请输入手机短信验证码'
-            return result
-        }
-        if (!_util.validate(formData.verifyCode, 'verifyCode')) {
-            result.msg = '短信验证码格式不正确'
-            return result
+        if (formData.validate) {
+            //验证码验证
+            if (!_util.validate(formData.verifyCode, 'require')) {
+                result.msg = '请输入手机短信验证码'
+                return result
+            }
+            if (!_util.validate(formData.verifyCode, 'verifyCode')) {
+                result.msg = '短信验证码格式不正确'
+                return result
+            }
         }
 
         result.status = true
@@ -106,41 +167,41 @@ var page = {
 
     },
     //获取手机验证码请求
-    getVerifyCodeRequest: function () {
-        //1.验证手机号和图形验证码
-        //2.发送ajax请求
-        var _this = this
-        var phone = $('input[name="phone"]').val()
-        var captchaCode = $('input[name="captcha-code"]').val()
-        if (!_util.validate(phone, 'require')) {
-            formErr.show('请输入手机号')
-            return
-        }
-        if (!_util.validate(phone, 'phone')) {
-            formErr.show('手机号格式不正确')
-            return
-        }
-        formErr.hide()
-        api.getLoginVerifyCode({
-            data: {
-                phone: phone,
-                captchaCode: captchaCode
-            },
-            success: function (result) {
-                _util.showSuccessMsg('验证码发送成功')
-                $('input[name="captcha-code"]').val('')
-                $('.captcha-box').hide()
-                //在本地localStorage存储发送的时间
-                window.localStorage.setItem('getRegisterVerifyCodeTime', Date.now())
-                //开始倒计时
-                _this.handleTimer()
-            },
-            error: function (msg) {
+    // getVerifyCodeRequest: function () {
+    //     //1.验证手机号和图形验证码
+    //     //2.发送ajax请求
+    //     var _this = this
+    //     var phone = $('input[name="phone"]').val()
+    //     var captchaCode = $('input[name="captcha-code"]').val()
+    //     if (!_util.validate(phone, 'require')) {
+    //         formErr.show('请输入手机号')
+    //         return
+    //     }
+    //     if (!_util.validate(phone, 'phone')) {
+    //         formErr.show('手机号格式不正确')
+    //         return
+    //     }
+    //     formErr.hide()
+    //     api.getLoginVerifyCode({
+    //         data: {
+    //             phone: phone,
+    //             captchaCode: captchaCode
+    //         },
+    //         success: function (result) {
+    //             _util.showSuccessMsg('验证码发送成功')
+    //             $('input[name="captcha-code"]').val('')
+    //             $('.captcha-box').hide()
+    //             //在本地localStorage存储发送的时间
+    //             window.localStorage.setItem('getRegisterVerifyCodeTime', Date.now())
+    //             //开始倒计时
+    //             _this.handleTimer()
+    //         },
+    //         error: function (msg) {
 
-                formErr.show(msg)
-            }
-        })
-    },
+    //             formErr.show(msg)
+    //         }
+    //     })
+    // },
     //处理倒计时
     handleTimer: function () {
         var _this = this
@@ -159,10 +220,10 @@ var page = {
                     restSecond = totalSecond - passedSecond//计算剩余时间
                     if (restSecond <= 0) {
                         clearInterval(_this.timer)
-                        $btn.removeClass('disable-btn')//解除禁用
+                        $btn.removeClass('disable-btn').html('获取验证码')//解除禁用
                         window.localStorage.removeItem('getRegisterVerifyCodeTime')//删除本地localStorage存储发送的时间
                     } else {
-                        $btn.removeClass('disable-btn').html('获取验证码')
+                        $btn.html(restSecond + 's后重试')
                         window.localStorage.removeItem('getRegisterVerifyCodeTime')
                     }
                 }, 1000)

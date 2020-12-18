@@ -112,7 +112,6 @@ var page = {
             result.msg = '图形验证码格式不正确'
             return result
         }
-
         result.status = true
         return result
     },

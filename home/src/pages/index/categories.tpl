@@ -1,4 +1,3 @@
-
 <ul>
 {{#categories}}
 <li class="keyword-item" data-id="{{_id}}">

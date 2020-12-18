@@ -195,7 +195,7 @@ var pages = {
                         $btn.removeClass('disable-btn')//解除禁用
                         window.localStorage.removeItem('getRegisterVerifyCodeTime')//删除本地localStorage存储发送的时间
                     } else {
-                        $btn.removeClass('disable-btn').html('获取验证码')
+                        $btn.html(restSecond + 's后重试')
                         window.localStorage.removeItem('getRegisterVerifyCodeTime')
                     }
                 }, 1000)
