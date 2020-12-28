@@ -1,0 +1,1 @@
+export const CHANGE_TAB_BAR_ACTIVE = "tab_bar_change_active"

@@ -1,4 +1,6 @@
 const path = require('path')
+const pxtorem = require('postcss-pxtorem');
+// const autoprefixer = require('autoprefixer');
 
 module.exports = {
     pluginOptions: {
@@ -7,14 +9,21 @@ module.exports = {
             patterns: [
                 path.resolve(__dirname, './src/assets/less/index.less')
             ]
-        }
+        },
+        autoprefixer: {
+            browsers: ['Android >= 4.0', 'iOS >= 8'],
+        },
+        'postcss-pxtorem': {
+            rootValue: 37.5,
+            propList: ['*'],
+        },
     },
     css: {
         loaderOptions: {
             less: {
                 //自定义主题
                 modifyVars: {
-                    'hack': 'true; @import "' + path.resolve(__dirname, './src/assets/less/them.less')+'";'
+                    'hack': 'true; @import "' + path.resolve(__dirname, './src/assets/less/them.less') + '";'
                 }
             }
         }

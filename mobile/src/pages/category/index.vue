@@ -1,13 +1,13 @@
 <!--1.模版-->
 <template>
-  <div class="home">home page</div>
+  <div class="user">user page</div>
 </template>
 
 <!--2.逻辑-->
 <script>
 //导出当前组件的配置
 export default {
-  name: "Home",
+  name: "User",
 };
 </script>
 
