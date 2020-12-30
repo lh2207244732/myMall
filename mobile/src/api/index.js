@@ -1,6 +1,5 @@
-
 import axios from 'axios'
-import { goLogin, removeUsername } from '../util'
+// import { goLogin, removeUsername } from '../util'
 
 import { SERVER, VERSION, API_CONFIG } from './config'
 
