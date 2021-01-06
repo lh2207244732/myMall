@@ -27,12 +27,23 @@ import { mapActions } from "vuex";
 
 import { GET_ADS } from "./store/types";
 export default {
-  name: "Home",
-  components: {
-    Search,
+	name: "Home",
+	components: {
+	Search,
   },
   mounted() {
-    this[GET_ADS]();
+	this[GET_ADS]()
+	.then(()=>{
+		 new Swiper ('.swiper-container', {
+                loop: true, // 循环模式选项
+                autoplay:true,
+                // 如果需要分页器
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable:true
+                }
+            }) 
+	})
   },
   methods: {
     ...mapActions([GET_ADS]),
